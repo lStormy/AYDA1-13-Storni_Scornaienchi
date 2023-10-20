@@ -1,21 +1,23 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 template <typename T> class Avl {
     protected:
         class Nodo {
             private:
-             Avl * izq;
-             Avl * der;
+                Avl * izq;
+                Avl * der;
                 T dato;
             public:
-                Nodo  (Avl<T> *& izq, Avl<T> *& der, const T & elemento) {
+                Nodo  (Avl<T> * izq, Avl<T> * der, const T & elemento) {
                     this->dato = elemento;
                     this->izq = izq;
                     this->der = der;
                 }
-             Avl<T> * HijoIzq () {return izq;}
-             Avl<T> * HijoDer () {return der;}
+                Avl<T> * HijoIzq () const {return izq;}
+                Avl<T> * HijoDer () const {return der;}
                 const T & raiz () const {return dato;}
         };
         void vaciar (Avl<T> * raiz);
@@ -32,14 +34,14 @@ template <typename T> class Avl {
         Avl ();
         Avl (const Avl<T> *  otro);
         ~Avl () {vaciar (this);}
-        Avl<T> * operator=(Avl<T> * otro);
-        Avl<T> * sub_izq() {return primero->HijoIzq();}
-        Avl<T> * sub_der() {return primero->HijoDer();}
+        Avl<T> * operator=(const Avl<T> & otro);
+        Avl<T> * sub_izq() const {return primero->HijoIzq();}
+        Avl<T> * sub_der() const {return primero->HijoDer();}
         const T & dato () const {return primero->raiz();}
         void agregar(const T & elemento) {
             this->insertar(elemento);
             actualizar_alturas(this);
-            this->actualizar();
+            this->balancear();
         }
         //void eliminar ();
         int altura_nodo() const;
@@ -65,14 +67,14 @@ template <typename T> void Avl<T>::vaciar (Avl * raiz) {
     }
 }
 
-template <typename T> Avl<T> * Avl<T>::operator=(Avl<T> * otro) {
-    if (otro->vacio()) {
+template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> & otro) {
+    if (otro.vacio()) {
         primero = NULL;
         altura = 0;
     }
     else {
-        primero = new Nodo (otro->sub_izq(), otro->sub_der(), otro->dato());
-        altura = otro->altura;
+        primero = new Nodo (otro.sub_izq(), otro.sub_der(), otro.dato());
+        altura = otro.altura;
     }
     return this;
 }
@@ -114,7 +116,7 @@ template <typename T> Avl<T> * Avl<T>::rotar_izq (Avl<T> * raiz) {
     Avl * aux (raiz->sub_der());
     Avl * aux2 (aux->sub_izq());
     aux->sub_izq()->operator=( aux);
-    this->sub_der()->operator=( aux2);
+    raiz->sub_der()->operator=( aux2);
     actualizar_alturas(aux);
     actualizar_alturas(raiz);
     return raiz;
@@ -153,11 +155,11 @@ template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
 template <typename T> void Avl<T>::balancear () {
     if (!vacio()) {
         if (!balanceado()) {
-            rotar();
+            rotar(this);
         } else {
 
-            this->sub_izq()->actualizar();
-            this->sub_der()->actualizar();
+            this->sub_izq()->balancear();
+            this->sub_der()->balancear();
         }
     }
 }
@@ -171,17 +173,49 @@ template <typename T> void Avl<T>::insertar (const T & elemento) {
         }
     }
     else {
-        Avl * izq = new Avl();
-        Avl * der = new Avl();
+        Avl<T> * izq = new Avl<T>();
+        Avl<T> * der = new Avl<T>();
         primero = new Nodo (izq, der, elemento);
         actualizar_alturas(this);
     }
 }
 
+int getRandomNumber(int min, int max) {
+    // Seed the random number generator with the current time
+    std::srand(static_cast<unsigned int>(std::time(NULL)));
 
+    // Generate a random number between min and max
+    return min + std::rand() % (max - min + 1);
+}
+
+bool pertenece (Avl<int> * arb, const int & dato) {
+    if (!arb->vacio()) {
+        if (arb->dato() > dato) {
+            return pertenece (arb->sub_izq(), dato);
+        } else if(arb->dato() < dato) {
+            return pertenece (arb->sub_der(),dato);
+        } else {
+            return true;
+        }
+    }
+    return false;
+} 
+void mostrar (Avl<int> * arb) {
+    if (!arb->vacio()){
+        cout << arb->dato();
+        mostrar (arb->sub_der());
+        mostrar (arb->sub_izq());
+    }
+}
 
 template class Avl<int>;
 int main () {
     Avl<int> * arb = new Avl<int> ();
-       
+    for (int i = 0; i <15 ;i++ ) {
+        int rand = getRandomNumber(1, 100);
+        if (!pertenece(arb, rand)) {
+            arb->agregar(rand);
+        }
+        mostrar (arb);
+    }
 }
