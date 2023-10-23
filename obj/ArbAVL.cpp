@@ -21,14 +21,14 @@ template <typename T> class Avl {
                 const T & raiz () const {return dato;}
         };
         void vaciar (Avl<T> * raiz);
-        bool balanceado () const;
-        Avl<T> *  rotar(Avl<T> * raiz);
+        
+        Avl<T> * rotar(Avl<T> * raiz);
     private: 
         Nodo * primero;
         int altura;
         Avl<T> * rotar_izq (Avl<T> * raiz);
         Avl<T> * rotar_der (Avl<T> * raiz);
-        void actualizar_alturas(const Avl * raiz);
+        void actualizar_alturas();
         void insertar (const T & elemento);
     public:
         Avl ();
@@ -40,16 +40,17 @@ template <typename T> class Avl {
         const T & dato () const {return primero->raiz();}
         void agregar(const T & elemento) {
             this->insertar(elemento);
-            actualizar_alturas(this);
+            this->actualizar_alturas();
             this->balancear();
         }
-        //void eliminar ();
+        bool balanceado () const;
+        //void eliminar();
         int altura_nodo() const;
         bool vacio () const {return primero == NULL;}
         void balancear();
 };
 
-template <typename T> Avl<T>:: Avl() {
+template <typename T> Avl<T>::Avl() {
     primero = NULL;
     altura = 0;
 }
@@ -68,13 +69,16 @@ template <typename T> void Avl<T>::vaciar (Avl * raiz) {
 }
 
 template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> & otro) {
+    vaciar (this);
     if (otro.vacio()) {
+        cout << "Che toro, asigné un NULL " <<endl;
         primero = NULL;
         altura = 0;
     }
     else {
+        cout << "Che toro, no asigné un NULL " <<endl;
         primero = new Nodo (otro.sub_izq(), otro.sub_der(), otro.dato());
-        altura = otro.altura;
+        this->actualizar_alturas();
     }
     return this;
 }
@@ -82,29 +86,24 @@ template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> & otro) {
 
 template <typename T> int Avl<T>::altura_nodo () const {
     if (!vacio()) {
-        if ((!this->sub_izq()->vacio()) || (!this->sub_der()->vacio())) {
-            return 1 + max (this->sub_izq()->altura_nodo(),this->sub_der()->altura_nodo());
-        }
-        else {
-            return 0;
-        }
+        return 1 + max (this->sub_izq()->altura_nodo(),this->sub_der()->altura_nodo());
     }
-    return 0;
+    return -1;
 }
 
-template <typename T> void Avl<T>::actualizar_alturas(const Avl * raiz) {
+template <typename T> void Avl<T>::actualizar_alturas() {
     if (!vacio()) {
-        altura = this->altura_nodo();
-        actualizar_alturas(this->sub_izq());
-        actualizar_alturas(this->sub_der());
+        altura = altura_nodo();
+        sub_der()->actualizar_alturas();
+        sub_izq()->actualizar_alturas();
     }
     else {
-        altura = 0;
+        altura = -1;
     }
 }
 
 template <typename T> bool Avl<T>::balanceado() const { //Chequea si un nodo está balanceado.
-    if (((this->sub_izq()->altura - this->sub_der()->altura) > 1) && ((this->sub_izq()->altura - this->sub_der()->altura < -1))) {
+    if (((this->sub_izq()->altura - this->sub_der()->altura) > 1) || ((this->sub_izq()->altura - this->sub_der()->altura < -1))) {
         return false;
     }
     else {
@@ -113,13 +112,23 @@ template <typename T> bool Avl<T>::balanceado() const { //Chequea si un nodo est
 }
 
 template <typename T> Avl<T> * Avl<T>::rotar_izq (Avl<T> * raiz) {
-    Avl * aux (raiz->sub_der());
-    Avl * aux2 (aux->sub_izq());
-    aux->sub_izq()->operator=( aux);
-    raiz->sub_der()->operator=( aux2);
-    actualizar_alturas(aux);
-    actualizar_alturas(raiz);
-    return raiz;
+    Avl<T> * aux (raiz->sub_der());
+    Avl<T> * aux2 (aux->sub_izq());
+    if (!aux2->vacio()) {
+        cout << "ERROR ERROR" <<endl;
+    } else {
+        cout <<"Todo joya" <<endl;
+        
+    }
+    cout << "Llegué hasta acá por lo menos?" <<endl;
+    raiz->sub_der()->operator=(aux2);
+    cout << "Hola" <<endl;
+    aux->sub_izq()->operator=(raiz);
+    
+    cout << "Hola" <<endl;
+    aux->actualizar_alturas();
+    raiz->actualizar_alturas();
+    return aux;
 }
 
 template <typename T> Avl<T> * Avl<T>::rotar_der (Avl<T> * raiz) {
@@ -127,25 +136,19 @@ template <typename T> Avl<T> * Avl<T>::rotar_der (Avl<T> * raiz) {
     Avl * aux2 (aux->sub_der());
     aux->sub_der()->operator=(aux);
     raiz->sub_izq()->operator=(aux2);
-    actualizar_alturas(aux);
-    actualizar_alturas(raiz);
+    aux->actualizar_alturas();
+    raiz->actualizar_alturas();
+    
     return raiz;
 }
 
 template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
-    
     if (!vacio()) {
         int balance = (raiz->sub_izq()->altura - raiz->sub_der()->altura);
-        if (balance > 1 && dato() < raiz->sub_izq()->dato()) {
+        if (balance > 1) {
             raiz = rotar_der(raiz);
-        } else if (balance < -1 && dato() > sub_der()->dato()) {
-            raiz = rotar_izq(raiz);
-        } else if  (balance > 1 && dato() > sub_izq()->dato()){
-            raiz->sub_izq()->operator=(rotar_izq(raiz->sub_izq()));
-            raiz = rotar_der(raiz);            
-        } else {
-            raiz->sub_der()->operator=(rotar_der(sub_der()));
-            raiz = rotar_izq(raiz);
+        } else if (balance < -1) {
+            raiz = rotar_izq (raiz);
         }
         
     }
@@ -155,9 +158,8 @@ template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
 template <typename T> void Avl<T>::balancear () {
     if (!vacio()) {
         if (!balanceado()) {
-            rotar(this);
+            this->operator=(rotar(this));
         } else {
-
             this->sub_izq()->balancear();
             this->sub_der()->balancear();
         }
@@ -176,7 +178,7 @@ template <typename T> void Avl<T>::insertar (const T & elemento) {
         Avl<T> * izq = new Avl<T>();
         Avl<T> * der = new Avl<T>();
         primero = new Nodo (izq, der, elemento);
-        actualizar_alturas(this);
+        //actualizar_alturas(this);
     }
 }
 
@@ -202,20 +204,31 @@ bool pertenece (Avl<int> * arb, const int & dato) {
 } 
 void mostrar (Avl<int> * arb) {
     if (!arb->vacio()){
-        cout << arb->dato();
-        mostrar (arb->sub_der());
+        cout << arb->dato() << " ";
         mostrar (arb->sub_izq());
+        mostrar (arb->sub_der());
+    }
+}
+
+void balance(const Avl<int> & arb) {
+    if (arb.balanceado()) {
+        cout <<"Está balanceado" <<endl;
+    }
+    else {
+        cout << "No está balanceado" <<endl;
     }
 }
 
 template class Avl<int>;
 int main () {
     Avl<int> * arb = new Avl<int> ();
-    for (int i = 0; i <15 ;i++ ) {
-        int rand = getRandomNumber(1, 100);
-        if (!pertenece(arb, rand)) {
-            arb->agregar(rand);
-        }
-        mostrar (arb);
-    }
+    int dato = 0;
+    do {
+        cout << "Ingrese un dato al arreglo: ";
+        cin >> dato;
+        arb->agregar(dato);
+        balance(*arb);
+        mostrar(arb);
+        cout <<endl;
+    }while (dato > 0);
 }
