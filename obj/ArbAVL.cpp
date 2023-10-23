@@ -32,9 +32,9 @@ template <typename T> class Avl {
         void insertar (const T & elemento);
     public:
         Avl ();
-        Avl (const Avl<T> *  otro);
+        Avl (Avl<T> * otro);
         ~Avl () {vaciar (this);}
-        Avl<T> * operator=(const Avl<T> & otro);
+        Avl<T> * operator=(const Avl<T> * otro);
         Avl<T> * sub_izq() const {return primero->HijoIzq();}
         Avl<T> * sub_der() const {return primero->HijoDer();}
         const T & dato () const {return primero->raiz();}
@@ -55,29 +55,40 @@ template <typename T> Avl<T>::Avl() {
     altura = 0;
 }
 
-template <typename T> Avl<T>:: Avl(const Avl<T> * otro) {
+template <typename T> Avl<T>:: Avl(Avl<T> * otro) {
+    cout << "Copio..." <<endl;
     altura = otro->altura;
     this->operator=(otro);
 }
 
 template <typename T> void Avl<T>::vaciar (Avl * raiz) {
-    if (!vacio()) {
+    cout << "Entre al vaciar: ";
+    if (!raiz->vacio()) {cout << raiz->dato();}
+    cout <<endl;
+    
+    if (!(raiz->primero == NULL)) {
+        
         vaciar (raiz->sub_izq());
         vaciar (raiz->sub_der());
-        delete raiz;
+        delete raiz->primero;
+        raiz->primero = NULL;
     }
 }
 
-template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> & otro) {
+template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> * otro) {
+    cout << "Estoy en el operator" <<endl;
     vaciar (this);
-    if (otro.vacio()) {
-        cout << "Che toro, asigné un NULL " <<endl;
+    cout << "Pasé el vaciar..." << endl;
+    if (otro->vacio()) {
+        cout << "Asigné un NULL " <<endl;
         primero = NULL;
         altura = 0;
     }
     else {
-        cout << "Che toro, no asigné un NULL " <<endl;
-        primero = new Nodo (otro.sub_izq(), otro.sub_der(), otro.dato());
+        cout << "No asigné un NULL: " << otro->dato() <<endl;
+        Avl<T> * izq = new Avl<T> (otro->sub_izq());
+        Avl<T> * der = new Avl <T> (otro->sub_der());
+        primero = new Nodo (izq, der, otro->dato());
         this->actualizar_alturas();
     }
     return this;
@@ -112,22 +123,16 @@ template <typename T> bool Avl<T>::balanceado() const { //Chequea si un nodo est
 }
 
 template <typename T> Avl<T> * Avl<T>::rotar_izq (Avl<T> * raiz) {
-    Avl<T> * aux (raiz->sub_der());
-    Avl<T> * aux2 (aux->sub_izq());
-    if (!aux2->vacio()) {
-        cout << "ERROR ERROR" <<endl;
-    } else {
-        cout <<"Todo joya" <<endl;
-        
-    }
-    cout << "Llegué hasta acá por lo menos?" <<endl;
+    Avl<T> * aux = new Avl<T>(raiz->sub_der());
+    Avl<T> * aux2  = new Avl<T>(aux->sub_izq());
     raiz->sub_der()->operator=(aux2);
-    cout << "Hola" <<endl;
+    cout << "Primera asignación hecha" <<endl;
+    cout << aux->sub_der()->dato() << endl;
     aux->sub_izq()->operator=(raiz);
-    
-    cout << "Hola" <<endl;
+    cout << "Segunda asignación hecha" << endl;
     aux->actualizar_alturas();
     raiz->actualizar_alturas();
+    cout << "Salí";
     return aux;
 }
 
@@ -135,11 +140,14 @@ template <typename T> Avl<T> * Avl<T>::rotar_der (Avl<T> * raiz) {
     Avl * aux (raiz->sub_izq());
     Avl * aux2 (aux->sub_der());
     aux->sub_der()->operator=(aux);
+    cout << "Primera asignación hecha" << endl;
     raiz->sub_izq()->operator=(aux2);
+    cout << "Segunda asignación hecha" << endl;
     aux->actualizar_alturas();
     raiz->actualizar_alturas();
+    cout << "Salí" << endl;
     
-    return raiz;
+    return aux;
 }
 
 template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
@@ -158,7 +166,7 @@ template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
 template <typename T> void Avl<T>::balancear () {
     if (!vacio()) {
         if (!balanceado()) {
-            this->operator=(rotar(this));
+            this->operator=(*rotar(this));
         } else {
             this->sub_izq()->balancear();
             this->sub_der()->balancear();
@@ -219,8 +227,7 @@ void balance(const Avl<int> & arb) {
     }
 }
 
-template class Avl<int>;
-int main () {
+template class Avl<int>;int main () {
     Avl<int> * arb = new Avl<int> ();
     int dato = 0;
     do {
