@@ -16,6 +16,7 @@ template <typename T> class Avl {
                     this->izq = izq;
                     this->der = der;
                 }
+
                 Avl<T> * HijoIzq () const {return izq;}
                 Avl<T> * HijoDer () const {return der;}
                 const T & raiz () const {return dato;}
@@ -56,18 +57,13 @@ template <typename T> Avl<T>::Avl() {
 }
 
 template <typename T> Avl<T>:: Avl(Avl<T> * otro) {
-    cout << "Copio..." <<endl;
     altura = otro->altura;
+    this->primero = NULL;
     this->operator=(otro);
 }
 
 template <typename T> void Avl<T>::vaciar (Avl * raiz) {
-    cout << "Entre al vaciar: ";
-    if (!raiz->vacio()) {cout << raiz->dato();}
-    cout <<endl;
-    
-    if (!(raiz->primero == NULL)) {
-        
+    if (!raiz->vacio()) {
         vaciar (raiz->sub_izq());
         vaciar (raiz->sub_der());
         delete raiz->primero;
@@ -76,16 +72,14 @@ template <typename T> void Avl<T>::vaciar (Avl * raiz) {
 }
 
 template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> * otro) {
-    cout << "Estoy en el operator" <<endl;
-    vaciar (this);
-    cout << "Pasé el vaciar..." << endl;
+    if (!this->vacio()){
+        vaciar (this);
+    }
     if (otro->vacio()) {
-        cout << "Asigné un NULL " <<endl;
         primero = NULL;
         altura = 0;
     }
     else {
-        cout << "No asigné un NULL: " << otro->dato() <<endl;
         Avl<T> * izq = new Avl<T> (otro->sub_izq());
         Avl<T> * der = new Avl <T> (otro->sub_der());
         primero = new Nodo (izq, der, otro->dato());
@@ -126,26 +120,20 @@ template <typename T> Avl<T> * Avl<T>::rotar_izq (Avl<T> * raiz) {
     Avl<T> * aux = new Avl<T>(raiz->sub_der());
     Avl<T> * aux2  = new Avl<T>(aux->sub_izq());
     raiz->sub_der()->operator=(aux2);
-    cout << "Primera asignación hecha" <<endl;
-    cout << aux->sub_der()->dato() << endl;
     aux->sub_izq()->operator=(raiz);
-    cout << "Segunda asignación hecha" << endl;
     aux->actualizar_alturas();
     raiz->actualizar_alturas();
-    cout << "Salí";
     return aux;
 }
 
 template <typename T> Avl<T> * Avl<T>::rotar_der (Avl<T> * raiz) {
-    Avl * aux (raiz->sub_izq());
-    Avl * aux2 (aux->sub_der());
-    aux->sub_der()->operator=(aux);
-    cout << "Primera asignación hecha" << endl;
+    Avl * aux = new Avl<T> (raiz->sub_izq());
+    Avl * aux2  = new Avl<T>(aux->sub_der());
     raiz->sub_izq()->operator=(aux2);
-    cout << "Segunda asignación hecha" << endl;
+    aux->sub_der()->operator=(raiz);
+    
     aux->actualizar_alturas();
     raiz->actualizar_alturas();
-    cout << "Salí" << endl;
     
     return aux;
 }
@@ -166,7 +154,7 @@ template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
 template <typename T> void Avl<T>::balancear () {
     if (!vacio()) {
         if (!balanceado()) {
-            this->operator=(*rotar(this));
+            this->operator=(rotar(this));
         } else {
             this->sub_izq()->balancear();
             this->sub_der()->balancear();
@@ -210,11 +198,14 @@ bool pertenece (Avl<int> * arb, const int & dato) {
     }
     return false;
 } 
-void mostrar (Avl<int> * arb) {
+void mostrar (Avl<int> * arb, int cont) {
     if (!arb->vacio()){
-        cout << arb->dato() << " ";
-        mostrar (arb->sub_izq());
-        mostrar (arb->sub_der());
+        mostrar (arb->sub_der(), cont+1 );
+        for (int i = 0; i < cont; i++) {
+            cout << "  ";
+        }
+        cout << arb->dato() <<endl;
+        mostrar(arb->sub_izq(), cont +1);
     }
 }
 
@@ -235,7 +226,7 @@ template class Avl<int>;int main () {
         cin >> dato;
         arb->agregar(dato);
         balance(*arb);
-        mostrar(arb);
+        mostrar(arb, 0);
         cout <<endl;
     }while (dato > 0);
 }
