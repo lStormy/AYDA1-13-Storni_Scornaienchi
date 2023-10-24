@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "Contacto.cpp"
 using namespace std;
 
 template <typename T> class Avl {
@@ -55,6 +56,7 @@ template <typename T> Avl<T>::Avl() {
     primero = NULL;
     altura = 0;
 }
+//suka
 
 template <typename T> Avl<T>:: Avl(Avl<T> * otro) {
     altura = otro->altura;
@@ -72,9 +74,6 @@ template <typename T> void Avl<T>::vaciar (Avl * raiz) {
 }
 
 template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> * otro) {
-    if (!this->vacio()){
-        vaciar (this);
-    }
     if (otro->vacio()) {
         primero = NULL;
         altura = 0;
@@ -131,10 +130,8 @@ template <typename T> Avl<T> * Avl<T>::rotar_der (Avl<T> * raiz) {
     Avl * aux2  = new Avl<T>(aux->sub_der());
     raiz->sub_izq()->operator=(aux2);
     aux->sub_der()->operator=(raiz);
-    
     aux->actualizar_alturas();
     raiz->actualizar_alturas();
-    
     return aux;
 }
 
@@ -145,8 +142,7 @@ template <typename T> Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
             raiz = rotar_der(raiz);
         } else if (balance < -1) {
             raiz = rotar_izq (raiz);
-        }
-        
+        }   
     }
     return raiz;
 }
@@ -198,6 +194,7 @@ bool pertenece (Avl<int> * arb, const int & dato) {
     }
     return false;
 } 
+
 void mostrar (Avl<int> * arb, int cont) {
     if (!arb->vacio()){
         mostrar (arb->sub_der(), cont+1 );
@@ -218,7 +215,9 @@ void balance(const Avl<int> & arb) {
     }
 }
 
-template class Avl<int>;int main () {
+template class Avl<int>;
+template class Avl<Contacto>;
+int main () {
     Avl<int> * arb = new Avl<int> ();
     int dato = 0;
     do {
@@ -228,5 +227,6 @@ template class Avl<int>;int main () {
         balance(*arb);
         mostrar(arb, 0);
         cout <<endl;
-    }while (dato > 0);
+    } while (dato > 0);
 }
+//QUIERO LA LIBERTADORESS
