@@ -134,6 +134,14 @@ template <typename T> class Lista {
             }
             cout << endl;
         }
+        friend std::ostream& operator << (std::ostream&os, const Lista<T> & l) {
+            os << "[ ";
+            for (int i=1; i <= len(); i++) {
+                os << l->operator()(i) << " ";
+            }
+            os << "] ";
+            return os;
+        }
 };
 
 template class Lista<int>;

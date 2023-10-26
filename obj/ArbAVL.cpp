@@ -1,10 +1,13 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+//#include "Contacto.cpp"
+#include <string>
+
 
 using namespace std;
 
-template <typename T> class Avl {
+template <typename T> class Avl { //QUIERO LA LIBERTADORESS
     protected:
         class Nodo {
             private:
@@ -25,7 +28,6 @@ template <typename T> class Avl {
         void vaciar (Avl<T> * raiz);
         Avl<T> * rotar(Avl<T> * raiz);
     private: 
-        Avl<T> * min_rama(); 
         Nodo * primero;
         int altura;
         Avl<T> * rotar_izq (Avl<T> * raiz);
@@ -33,28 +35,38 @@ template <typename T> class Avl {
         void actualizar_alturas();
         void insertar (const T & elemento);
         void eliminar(const T & dato);
+        bool balanceado () const;
+        Avl<T> * min_rama(); 
     public:
-        Avl ();
-        Avl (Avl<T> * otro);
+        //Generadoras
+        Avl (); //En vacio
+        Avl (Avl<T> * otro); // Por copia
+        
+        //Destructora
         ~Avl () {vaciar (this);}
-        Avl<T> * operator=(const Avl<T> * otro);
+        
+        //Lectoras
         Avl<T> * sub_izq() const {return primero->HijoIzq();}
         Avl<T> * sub_der() const {return primero->HijoDer();}
         const T & dato () const {return primero->raiz();}
+        Avl<T> * operator=(const Avl<T> * otro);
+        const T & buscar (const T & dato) const;
+        int altura_nodo() const;
+        void inorden();
+        bool vacio () const {return primero == NULL;}
+        
+        //Modificadoras
+        void balancear(); 
         void agregar(const T & elemento) {
             this->insertar(elemento);
             this->actualizar_alturas();
             this->balancear();
         }
-        bool balanceado () const;
         void borrar(const T & dato) {
             this->eliminar(dato);
             this->actualizar_alturas();
             this->balancear();
         }
-        int altura_nodo() const;
-        bool vacio () const {return primero == NULL;}
-        void balancear();
 };
 
 template <typename T> Avl<T>::Avl() {
@@ -221,6 +233,14 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
     }
 }
 
+template <typename T> void Avl<T>::inorden() {
+    if (!vacio()) {
+        sub_izq()->inorden();
+        cout << dato() << " ";
+        sub_der()->inorden();
+    }
+}
+
 bool pertenece (Avl<int> * arb, const int & dato) {
     if (!arb->vacio()) {
         if (arb->dato() > dato) {
@@ -245,16 +265,8 @@ void mostrar (Avl<int> * arb, int cont) {
     }
 }
 
-void balance(const Avl<int> & arb) {
-    if (arb.balanceado()) {
-        cout <<"Está balanceado" <<endl;
-    }
-    else {
-        cout << "No está balanceado" <<endl;
-    }
-} //QUIERO LA LIBERTADORESS
-
 template class Avl<int>;
+//template class Avl<Contacto>;
 
 int main () {
     Avl<int> * arb = new Avl<int> ();
@@ -264,7 +276,6 @@ int main () {
         cin >> dato;
         if (dato > 0){
             arb->agregar(dato);
-            balance(*arb);
         }        
         mostrar(arb, 0);
         cout <<endl;
@@ -274,4 +285,5 @@ int main () {
     arb->borrar(dato);
     cout << endl;
     mostrar(arb, 0);
+    arb->inorden();
 }
