@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "Contacto.cpp"
+#include <string>
 using namespace std;
 
 template <typename T> class Lista {
@@ -137,7 +137,8 @@ template <typename T> class Lista {
 };
 
 template class Lista<int>;
-template class lista<contacto>;
+template class Lista<string>;
+
 
 void cargar_lista (Lista<int> & list) {
     cout << "<Deja de cargar con un entero menor a 0>" <<endl;

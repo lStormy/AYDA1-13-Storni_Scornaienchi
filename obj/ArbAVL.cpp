@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "Contacto.cpp"
+
 using namespace std;
 
 template <typename T> class Avl {
@@ -20,18 +20,19 @@ template <typename T> class Avl {
 
                 Avl<T> * HijoIzq () const {return izq;}
                 Avl<T> * HijoDer () const {return der;}
-                const T & raiz () const {return dato;}
+                T & raiz () {return dato;}
         };
         void vaciar (Avl<T> * raiz);
-        
         Avl<T> * rotar(Avl<T> * raiz);
     private: 
+        Avl<T> * min_rama(); 
         Nodo * primero;
         int altura;
         Avl<T> * rotar_izq (Avl<T> * raiz);
         Avl<T> * rotar_der (Avl<T> * raiz);
         void actualizar_alturas();
         void insertar (const T & elemento);
+        void eliminar(const T & dato);
     public:
         Avl ();
         Avl (Avl<T> * otro);
@@ -46,7 +47,11 @@ template <typename T> class Avl {
             this->balancear();
         }
         bool balanceado () const;
-        //void eliminar();
+        void borrar(const T & dato) {
+            this->eliminar(dato);
+            this->actualizar_alturas();
+            this->balancear();
+        }
         int altura_nodo() const;
         bool vacio () const {return primero == NULL;}
         void balancear();
@@ -174,12 +179,46 @@ template <typename T> void Avl<T>::insertar (const T & elemento) {
     }
 }
 
-int getRandomNumber(int min, int max) {
-    // Seed the random number generator with the current time
-    std::srand(static_cast<unsigned int>(std::time(NULL)));
+template <typename T> Avl<T> * Avl<T>::min_rama() {
+    if (!vacio()) {
+        if (sub_izq()->vacio()) {
+            return this;
+        } else {
+            return sub_izq();
+        }
+    } else {
+        return NULL;
+    } 
+}
 
-    // Generate a random number between min and max
-    return min + std::rand() % (max - min + 1);
+template <typename T> void Avl<T>::eliminar(const T & dato) {
+    if (vacio()) {
+        return;
+    } else if (dato < this->dato()) {
+        sub_izq()->eliminar(dato);    
+    } else if (dato > this->dato()) {
+        sub_der()->eliminar(dato);
+    } else {
+        if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
+            Avl<T> * temp = this->sub_der()->min_rama(); 
+            primero->raiz() = temp->dato();
+            sub_der()->eliminar(temp->dato());
+        } else {
+            if (sub_izq()->vacio() && sub_der()->vacio()) {
+                delete this->primero;
+                this->primero = NULL;
+            } else {
+                Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
+                primero->raiz() = temp->dato();
+                cout << "Llego acá" << endl;
+                if (sub_izq()->vacio()) {
+                    sub_der()->eliminar(temp->dato());
+                } else {
+                    sub_izq()->eliminar(temp->dato());
+                }
+            }    
+        }
+    }
 }
 
 bool pertenece (Avl<int> * arb, const int & dato) {
@@ -213,20 +252,26 @@ void balance(const Avl<int> & arb) {
     else {
         cout << "No está balanceado" <<endl;
     }
-}
+} //QUIERO LA LIBERTADORESS
 
 template class Avl<int>;
-template class Avl<Contacto>;
+
 int main () {
     Avl<int> * arb = new Avl<int> ();
     int dato = 0;
-    do {
+    while (dato >= 0){
         cout << "Ingrese un dato al arreglo: ";
         cin >> dato;
-        arb->agregar(dato);
-        balance(*arb);
+        if (dato > 0){
+            arb->agregar(dato);
+            balance(*arb);
+        }        
         mostrar(arb, 0);
         cout <<endl;
-    } while (dato > 0);
+    } 
+    cout << endl << "Ingrese el valor a eliminar: ";
+    cin >> dato;
+    arb->borrar(dato);
+    cout << endl;
+    mostrar(arb, 0);
 }
-//QUIERO LA LIBERTADORESS
