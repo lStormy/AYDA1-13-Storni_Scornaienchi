@@ -4,27 +4,12 @@
 
 class Contacto {
     private: 
-        struct fecha {
-            int dd, mm, aa;  
-            friend std::ostream & operator << (std::ostream & os, const fecha & f) {
-                os << f.dd << "/" << f.mm << "/" << f.aa << endl;
-                return os;
-            }  
-        };
         string nombre, mail, direccion,  organizacion, puesto, notas;
         int numero;
-        fecha cumple;
+        string cumple;
         Lista<string> links;         
-    protected:
-        bool validar_fecha () {
-            if (cumple.dd <= 31 && cumple.aa <= 2023 && cumple.dd <= 12) {
-                return  true;
-            } else {
-                return false;
-            }
-        }
     public:
-        Contacto (string n, string m, string d, string o, string p, string notas, int cel, fecha c, Lista<string> l) {
+        Contacto (string n, string m, string d, string o, string p, string notas, int cel, string c) {
             nombre = n;
             mail = m;
             direccion = d;
@@ -32,12 +17,11 @@ class Contacto {
             puesto = p;
             numero = cel;
             cumple = c;
-            links = l;
         }
-        bool operator>>(const Contacto & otro) {
+        bool operator >(const Contacto & otro) {
             return this->nombre > otro.nombre;
         } 
-        bool operator<<(const Contacto & otro) {
+        bool operator <(const Contacto & otro) {
             return this->nombre < otro.nombre;
         }
         friend std::ostream & operator << (std::ostream& os, const Contacto & c) {
@@ -56,3 +40,18 @@ class Contacto {
 
 
 };
+
+
+int main () {
+    Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
+    cout << nuevo;
+    Contacto otro = Contacto("Barlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
+    cout << endl << otro;
+    if (nuevo < otro) {
+        cout << "Es menor" << endl;
+    } else {
+        cout << "Es mayor" << endl;
+    }
+    cout << endl;
+    return 0;
+}
