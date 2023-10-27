@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1584205420 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\main.cpp
+	<iostream>
+
+1698448259 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\lista.cpp
+	<iostream>
+	<cassert>
+	<string>
+
+1698448849 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\arbolavl.cpp
+	<iostream>
+	<cstdlib>
+	<ctime>
+	"contacto.cpp"
+	<string>
+
+1698448864 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\contacto.cpp
+	<iostream>
+	"lista.cpp"
+	<string>
+
+1698448899 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\lista.cpp
+	<iostream>
+	<cassert>
+	<string>
+
