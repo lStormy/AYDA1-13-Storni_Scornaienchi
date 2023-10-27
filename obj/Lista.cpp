@@ -136,8 +136,8 @@ template <typename T> class Lista {
         }
         friend std::ostream& operator << (std::ostream&os, const Lista<T> & l) {
             os << "[ ";
-            for (int i=1; i <= len(); i++) {
-                os << l->operator()(i) << " ";
+            for (int i=1; i <= l.len(); i++) {
+                os << l.operator()(i) << " ";
             }
             os << "] ";
             return os;
@@ -159,14 +159,4 @@ void cargar_lista (Lista<int> & list) {
         cout << "Inserte un elemento a la lista: ";
         cin >> elemento;
     }
-}
-
-int main () {
-    Lista<int> nueva = Lista<int>();
-    cout << nueva.len() <<endl;
-    cargar_lista(nueva);
-    cout << nueva.len() <<endl;
-    cout << "Primer elemento: " << nueva(1);
-    nueva.mostrar();
-    return 0;
 }

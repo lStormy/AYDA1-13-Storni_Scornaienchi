@@ -19,8 +19,10 @@ class Agenda  {
         void eliminar_contacto (const Contacto & elemento) {
             contactos->borrar(elemento);
         }
-        const Contacto & recuperar(const Contacto & elemento) {
-            
+        void recuperar(const string & nombre) const {
+            Contacto nuevo = Contacto();
+            nuevo.modificar_nombre(nombre);
+            contactos->buscar(nuevo);
         } 
 
 

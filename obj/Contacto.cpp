@@ -17,12 +17,30 @@ class Contacto {
             puesto = p;
             numero = cel;
             cumple = c;
+        } 
+        Contacto() {}
+        Contacto & operator = (const Contacto & otro) {
+            this->nombre = otro.nombre;
+            this->cumple = otro.cumple;
+            this->direccion = otro.direccion;
+            this->mail = otro.mail;
+            this->notas = otro.notas;
+            this->numero = otro.numero;
+            this->organizacion = otro.organizacion;
+            this->puesto = otro.puesto;
+            return * this;
         }
-        bool operator >(const Contacto & otro) {
+        void modificar_nombre (const string & nombre) {
+            this->nombre = nombre;
+        }
+        bool operator >(const Contacto & otro) const {
             return this->nombre > otro.nombre;
         } 
-        bool operator <(const Contacto & otro) {
+        bool operator <(const Contacto & otro) const {
             return this->nombre < otro.nombre;
+        }
+        bool operator== (const Contacto & otro) const {
+            return this->nombre == otro.nombre;
         }
         friend std::ostream & operator << (std::ostream& os, const Contacto & c) {
             os << endl << "<Datos contacto>" 
@@ -42,7 +60,7 @@ class Contacto {
 };
 
 
-int main () {
+/**int main () {
     Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
     cout << nuevo;
     Contacto otro = Contacto("Barlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
@@ -54,4 +72,4 @@ int main () {
     }
     cout << endl;
     return 0;
-}
+}*/

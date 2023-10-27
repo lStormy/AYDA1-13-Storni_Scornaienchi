@@ -1,13 +1,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-//#include "Contacto.cpp"
+#include "Contacto.cpp"
 #include <string>
-
 
 using namespace std;
 
-template <typename T> class Avl { //QUIERO LA LIBERTADORESS
+template <typename T> class Avl {
     protected:
         class Nodo {
             private:
@@ -50,7 +49,7 @@ template <typename T> class Avl { //QUIERO LA LIBERTADORESS
         Avl<T> * sub_der() const {return primero->HijoDer();}
         const T & dato () const {return primero->raiz();}
         Avl<T> * operator=(const Avl<T> * otro);
-        const T & buscar (const T & dato) const;
+        bool buscar (const T & dato) const; //Busca e imprime si lo encuentra
         int altura_nodo() const;
         void inorden();
         bool vacio () const {return primero == NULL;}
@@ -233,6 +232,20 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
     }
 }
 
+template <typename T> bool Avl<T>::buscar (const T & dato) const {
+    if (vacio()) {
+        return false;
+    } else {
+        if (this->dato() == dato) {
+            cout << this->dato();
+            return true;
+        } else {
+            return (sub_izq()->buscar(dato) || sub_der()->buscar(dato));
+        }
+    }
+}
+
+
 template <typename T> void Avl<T>::inorden() {
     if (!vacio()) {
         sub_izq()->inorden();
@@ -241,49 +254,5 @@ template <typename T> void Avl<T>::inorden() {
     }
 }
 
-bool pertenece (Avl<int> * arb, const int & dato) {
-    if (!arb->vacio()) {
-        if (arb->dato() > dato) {
-            return pertenece (arb->sub_izq(), dato);
-        } else if(arb->dato() < dato) {
-            return pertenece (arb->sub_der(),dato);
-        } else {
-            return true;
-        }
-    }
-    return false;
-} 
-
-void mostrar (Avl<int> * arb, int cont) {
-    if (!arb->vacio()){
-        mostrar (arb->sub_der(), cont+1 );
-        for (int i = 0; i < cont; i++) {
-            cout << "  ";
-        }
-        cout << arb->dato() <<endl;
-        mostrar(arb->sub_izq(), cont +1);
-    }
-}
-
 template class Avl<int>;
-//template class Avl<Contacto>;
-
-int main () {
-    Avl<int> * arb = new Avl<int> ();
-    int dato = 0;
-    while (dato >= 0){
-        cout << "Ingrese un dato al arreglo: ";
-        cin >> dato;
-        if (dato > 0){
-            arb->agregar(dato);
-        }        
-        mostrar(arb, 0);
-        cout <<endl;
-    } 
-    cout << endl << "Ingrese el valor a eliminar: ";
-    cin >> dato;
-    arb->borrar(dato);
-    cout << endl;
-    mostrar(arb, 0);
-    arb->inorden();
-}
+template class Avl<Contacto>;
