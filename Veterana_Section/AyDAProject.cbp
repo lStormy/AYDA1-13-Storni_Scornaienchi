@@ -36,6 +36,7 @@
 		<Unit filename="arbolAVL.cpp" />
 		<Unit filename="contacto.cpp" />
 		<Unit filename="lista.cpp" />
+		<Unit filename="lista.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
