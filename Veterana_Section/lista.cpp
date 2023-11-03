@@ -33,14 +33,6 @@ void Lista<T>::vaciar (Nodo * lista) {
 
 //Modificadoras
 template <typename T>
-Nodo * Lista<T>::nuevo (const T & dato) {
-    Nodo * aux = new Nodo();
-    aux->dato = dato;
-    aux->ste = NULL;
-    return aux;
-}
-
-template <typename T>
 void Lista<T>::insertar (const T & dato) {
     if (this->vacio()) {
         cout << dato << endl;
@@ -147,7 +139,7 @@ const T & Lista<T>::operator()(const int & pos) const {
 }
 
 template <typename T>
-void Lista<T>::mostrar () {
+void Lista<T>::mostrar () const{
     cout << endl;
     for (int i = 1; i <= len(); i++) {
         cout << this->operator()(i) << " ";
@@ -155,30 +147,8 @@ void Lista<T>::mostrar () {
     cout << endl;
 }
 
-template <typename T>
-friend ostream& operator << (ostream&os, const Lista<T> & l) {
-    os << "[ ";
-    for (int i=1; i <= l.len(); i++) {
-        os << l.operator()(i) << " ";
-    }
-    os << "] ";
-    return os;
-}
 
 template class Lista<int>;
 //template class Lista<string>;
 
-template <typename T>
-void Lista<T>::cargar_lista (Lista<int> & list) {
-    cout << "Deja de cargar con un entero menor a 0" <<endl;
-    cout << "Inserte un elemento a la lista: ";
-    int elemento = -1;
-    cin >> elemento;
-    while (elemento > -1) {
-        list.insertar(elemento);
-        elemento = -1;
-        cout << "Inserte un elemento a la lista: ";
-        cin >> elemento;
-    }
-}
 //Sukablyand

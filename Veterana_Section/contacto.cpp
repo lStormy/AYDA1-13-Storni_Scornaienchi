@@ -1,6 +1,3 @@
-#ifndef CONTACTO_H
-#define CONTACTO_H
-#endif // CONTACTO_H
 #include <iostream>
 #include "lista.h"
 #include <string>

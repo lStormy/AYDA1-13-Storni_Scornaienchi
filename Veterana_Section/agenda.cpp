@@ -4,28 +4,24 @@
 #include "agenda.h"
 #include "contacto.h"
 
-template <typename Contacto>
-Agenda<Contacto>::Agenda() {
+Agenda::Agenda() {
     contactos = new Avl<Contacto>();
 }
 
-template <typename Contacto>
-Agenda<Contacto>::Agenda(const Agenda & otro) {
+Agenda::Agenda(const Agenda & otro) {
     contactos = otro.contactos;
 }
 
-template <typename Contacto>
-void Agenda<Contacto>::cargar_contacto(const Contacto & elemento){
+void Agenda::cargar_contacto(const Contacto & elemento){
     contactos->agregar(elemento);
 }
 
-template <typename Contacto>
-void Agenda<Contacto>::eliminar_contacto(const Contacto & elemento) {
+
+void Agenda::eliminar_contacto(const Contacto & elemento) {
     contactos->borrar(elemento);
 }
 
-template <typename Contacto>
-void Agenda<Contacto>::recuperar(const string & nombre) const {
+void Agenda::recuperar(const string & nombre) const {
     Contacto nuevo = Contacto();
     nuevo.modificar_nombre(nombre);
     contactos->buscar(nuevo);

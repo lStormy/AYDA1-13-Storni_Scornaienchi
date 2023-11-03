@@ -1,9 +1,6 @@
 #ifndef CONTACTO_H_INCLUDED
 #define CONTACTO_H_INCLUDED
 
-#ifndef CONTACTO_H
-#define CONTACTO_H
-#endif // CONTACTO_H
 #include <iostream>
 #include "lista.h"
 #include <string>
@@ -16,7 +13,7 @@ class Contacto {
         string cumple;
         Lista<string> links;
     public:
-        Contacto (string n, string m, string d, string o, string p, string notas, int cel, string c) {
+        Contacto (string n, string m, string d, string o, string p, string notas, int cel, string c, Lista<string> &otro) {
             nombre = n;
             mail = m;
             direccion = d;
@@ -24,6 +21,7 @@ class Contacto {
             puesto = p;
             numero = cel;
             cumple = c;
+            links = otro;
         }
         Contacto() {}
         Contacto & operator = (const Contacto & otro) {
@@ -58,7 +56,7 @@ class Contacto {
                << "\nPuesto: " << c.puesto
                << "\nNumero: " << c.numero
                << "\nFecha de cumpleaños: " << c.cumple
-               //<< "\nLinks: " << c.links
+               << "\nLinks: " << c.links
                << "\n<Fin de datos>"<<endl;
             return os;
         }
