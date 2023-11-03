@@ -24,23 +24,35 @@
 	<cassert>
 	<string>
 
-1698448849 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\arbolavl.cpp
+1699020043 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\arbolavl.cpp
+	"arbolAVL.h"
 	<iostream>
 	<cstdlib>
 	<ctime>
 	"contacto.cpp"
 	<string>
 
-1698448864 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\contacto.cpp
+1699025307 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\contacto.cpp
 	<iostream>
-	"lista.cpp"
+	"lista.h"
 	<string>
 
-1698448899 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\lista.cpp
+1698924145 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\lista.cpp
 	<iostream>
 	<cassert>
 	<string>
+	"lista.h"
 
 1584205420 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\main.cpp
 	<iostream>
+
+1699017800 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\lista.h
+	<iostream>
+
+1699016078 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\contacto.cpp
+	<iostream>
+	"lista.h"
+	<string>
+
+1699020415 c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\arbolavl.h
 

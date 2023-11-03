@@ -1,3 +1,6 @@
+#ifndef CONTACTO_H_INCLUDED
+#define CONTACTO_H_INCLUDED
+
 #ifndef CONTACTO_H
 #define CONTACTO_H
 #endif // CONTACTO_H
@@ -61,6 +64,7 @@ class Contacto {
         }
 };
 
+
 /**int main () {
     Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Suka", "Nada", 41349, "1/1/1");
     cout << nuevo;
@@ -74,3 +78,5 @@ class Contacto {
     cout << endl;
     return 0;
 }*/
+
+#endif // CONTACTO_H_INCLUDED

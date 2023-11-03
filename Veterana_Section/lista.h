@@ -1,3 +1,5 @@
+#include <iostream>
+
 #ifndef LISTA_H_INCLUDED
 #define LISTA_H_INCLUDED
 
@@ -31,10 +33,10 @@ class Lista {
         bool vacio () const;
         int len() const;
         const T & operator()(const int & pos) const;
-        Lista<T> & operator= (const Lista<T> & otro) const;
+        Lista<T>& operator= (const Lista<T>& otro) const;
         void mostrar () const;
-        friend ostream& operator << (ostream&os, const Lista<T> & l) const;
-}
+        friend std::ostream& operator << (std::ostream&os, const Lista<T> & l);
+};
 
 
 #endif // LISTA_H_INCLUDED

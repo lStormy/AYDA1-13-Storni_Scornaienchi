@@ -121,7 +121,7 @@ int Lista<T>::len() const {
 }
 
 template <typename T>
-Lista<T> & Lista<T>::operator= (const Lista<T> & otro) {
+Lista<T>& Lista<T>::operator= (const Lista<T>& otro) {
     if (!this->vacio()) {
         vaciar(this->primero);
     }
