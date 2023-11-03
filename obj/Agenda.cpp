@@ -24,6 +24,7 @@ class Agenda  {
             nuevo.modificar_nombre(nombre);
             contactos->buscar(nuevo);
         } 
-
-
+        void mostrar_contactos () {
+            contactos->inorden();
+        }
 };

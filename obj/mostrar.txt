@@ -1,0 +1,11 @@
+
+void mostrar (Avl<int> * arb, int cont) {
+    if (!arb->vacio()){
+        mostrar (arb->sub_der(), cont+1 );
+        for (int i = 0; i < cont; i++) {
+            cout << "  ";
+        }
+        cout << arb->dato() <<endl;
+        mostrar(arb->sub_izq(), cont +1);
+    }
+}

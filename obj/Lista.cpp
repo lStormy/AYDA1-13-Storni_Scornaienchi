@@ -1,3 +1,6 @@
+#ifndef LISTA_H
+#define LISTA_H
+
 #include <iostream>
 #include <cassert>
 #include <string>
@@ -160,3 +163,4 @@ void cargar_lista (Lista<int> & list) {
         cin >> elemento;
     }
 }
+#endif

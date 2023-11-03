@@ -1,15 +1,20 @@
+#ifndef CONTACTO_H
+#define CONTACTO_H
+
 #include <iostream>
 #include "Lista.cpp"
 #include <string>
+using namespace std;
+
 
 class Contacto {
     private: 
         string nombre, mail, direccion,  organizacion, puesto, notas;
-        int numero;
+        string numero;
         string cumple;
         Lista<string> links;         
     public:
-        Contacto (string n, string m, string d, string o, string p, string notas, int cel, string c) {
+        Contacto (string n, string m, string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
             nombre = n;
             mail = m;
             direccion = d;
@@ -17,8 +22,11 @@ class Contacto {
             puesto = p;
             numero = cel;
             cumple = c;
+            links = l;
         } 
-        Contacto() {}
+        Contacto() {
+            links = Lista<string>();
+        }
         Contacto & operator = (const Contacto & otro) {
             this->nombre = otro.nombre;
             this->cumple = otro.cumple;
@@ -28,6 +36,7 @@ class Contacto {
             this->numero = otro.numero;
             this->organizacion = otro.organizacion;
             this->puesto = otro.puesto;
+            this->links = otro.links;
             return * this;
         }
         void modificar_nombre (const string & nombre) {
@@ -51,7 +60,7 @@ class Contacto {
                << "\nPuesto: " << c.puesto
                << "\nNumero: " << c.numero
                << "\nFecha de cumpleaños: " << c.cumple
-               //<< "\nLinks: " << c.links 
+               << "\nLinks: " << c.links 
                << "\n<Fin de datos>"<<endl;
             return os;
         }
@@ -73,3 +82,4 @@ class Contacto {
     cout << endl;
     return 0;
 }*/
+#endif
