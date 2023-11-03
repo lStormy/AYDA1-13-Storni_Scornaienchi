@@ -210,25 +210,22 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
     } else if (dato > this->dato()) {
         sub_der()->eliminar(dato);
     } else {
-        if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
+        if (sub_izq()->vacio() && sub_der()->vacio()) {
+            delete this->primero;
+            this->primero = NULL;
+        } else if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
             Avl<T> * temp = this->sub_der()->min_rama(); 
             primero->raiz() = temp->dato();
             sub_der()->eliminar(temp->dato());
         } else {
-            if (sub_izq()->vacio() && sub_der()->vacio()) {
-                delete this->primero;
-                this->primero = NULL;
+            Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
+            primero->raiz() = temp->dato();
+            if (sub_izq()->vacio()) {
+                sub_der()->eliminar(temp->dato());
             } else {
-                Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
-                primero->raiz() = temp->dato();
-                cout << "Llego acá" << endl;
-                if (sub_izq()->vacio()) {
-                    sub_der()->eliminar(temp->dato());
-                } else {
-                    sub_izq()->eliminar(temp->dato());
-                }
-            }    
-        }
+                sub_izq()->eliminar(temp->dato());
+            }
+        }    
     }
 }
 
@@ -249,10 +246,26 @@ template <typename T> bool Avl<T>::buscar (const T & dato) const {
 template <typename T> void Avl<T>::inorden() {
     if (!vacio()) {
         sub_izq()->inorden();
-        cout << dato() << " ";
+        cout << dato();
+        cout << endl;
         sub_der()->inorden();
     }
 }
 
 template class Avl<int>;
 template class Avl<Contacto>;
+
+
+int main () {
+    Avl<int> * arb = new Avl<int>();
+    for (int i = 1; i <= 15; i++) {
+        arb->agregar(i);
+    } 
+    arb->inorden();
+    cout << "Inserte el dato a eliminar: ";
+    int dato = 0;
+    cin >> dato;
+
+
+    return 0; 
+}
