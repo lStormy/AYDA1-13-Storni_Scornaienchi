@@ -255,17 +255,3 @@ template <typename T> void Avl<T>::inorden() {
 template class Avl<int>;
 template class Avl<Contacto>;
 
-
-int main () {
-    Avl<int> * arb = new Avl<int>();
-    for (int i = 1; i <= 15; i++) {
-        arb->agregar(i);
-    } 
-    arb->inorden();
-    cout << "Inserte el dato a eliminar: ";
-    int dato = 0;
-    cin >> dato;
-
-
-    return 0; 
-}
