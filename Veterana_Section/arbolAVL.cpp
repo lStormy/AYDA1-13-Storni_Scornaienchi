@@ -235,5 +235,5 @@ void Avl<T>::inorden() const {
     }
 }
 
-//template class Avl<int>;
-//template class Avl<Contacto>;
+template class Avl<int>;
+template class Avl<Contacto>;

@@ -149,6 +149,6 @@ void Lista<T>::mostrar () const{
 
 
 template class Lista<int>;
-//template class Lista<string>;
+template class Lista<string>;
 
 //Sukablyand

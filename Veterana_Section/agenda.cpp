@@ -26,11 +26,3 @@ void Agenda::recuperar(const string & nombre) const {
     nuevo.modificar_nombre(nombre);
     contactos->buscar(nuevo);
 }
-
-
-
-
-
-
-
-

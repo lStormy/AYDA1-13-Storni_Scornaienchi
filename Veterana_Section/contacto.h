@@ -23,7 +23,9 @@ class Contacto {
             cumple = c;
             links = otro;
         }
-        Contacto() {}
+        Contacto(){
+;            links = Lista<string>();
+        }
         Contacto & operator = (const Contacto & otro) {
             this->nombre = otro.nombre;
             this->cumple = otro.cumple;
@@ -35,6 +37,7 @@ class Contacto {
             this->puesto = otro.puesto;
             return * this;
         }
+
         void modificar_nombre (const string & nombre) {
             this->nombre = nombre;
         }
