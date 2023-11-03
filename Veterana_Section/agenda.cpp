@@ -3,6 +3,7 @@
 #include <string>
 #include "agenda.h"
 #include "contacto.h"
+#include "arbolAVL.h"
 
 Agenda::Agenda() {
     contactos = new Avl<Contacto>();
@@ -16,7 +17,6 @@ void Agenda::cargar_contacto(const Contacto & elemento){
     contactos->agregar(elemento);
 }
 
-
 void Agenda::eliminar_contacto(const Contacto & elemento) {
     contactos->borrar(elemento);
 }
@@ -26,3 +26,10 @@ void Agenda::recuperar(const string & nombre) const {
     nuevo.modificar_nombre(nombre);
     contactos->buscar(nuevo);
 }
+
+void Agenda::mostrar_contactos() const {
+    contactos->inorden();
+}
+
+
+

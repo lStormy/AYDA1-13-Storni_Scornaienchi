@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1696858472 source:c:\users\xaydu\onedrive\documentos\algoritmos\2023-2c\tpe\icontacts\main.cpp
+	<iostream>
+	<fstream>
+	<clocale>
+
+1699034977 source:c:\users\sergio y cristina\documents\facultad2.0\análisis y diseño de algoritmos\aydaproject\ayda1-13-storni_scornaienchi\veterana_section\icontacts\main.cpp
+	<iostream>
+	<fstream>
+	<clocale>
+

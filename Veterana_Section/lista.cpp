@@ -35,29 +35,16 @@ void Lista<T>::vaciar (Nodo * lista) {
 template <typename T>
 void Lista<T>::insertar (const T & dato) {
     if (this->vacio()) {
-        cout << dato << endl;
         Nodo * aux = nuevo (dato);
-
         primero = aux;
     } else {
-        if (dato < primero->dato) {
-            Nodo * aux = nuevo (dato);
-            cout << dato << endl;
-            aux->ste = primero;
-            primero = aux;
-        } else {
-            Nodo * cursor = primero;
-            while ((cursor->ste != NULL) && (cursor->ste->dato < dato)) {
-                cursor = cursor->ste;
-            }
-            Nodo * aux = nuevo(dato);
-            if (cursor->ste != NULL) {
-                aux->ste = cursor->ste;
-            }
-            cursor->ste = aux;
+        Nodo * cursor = primero;
+        while (cursor->ste != NULL) {
+            cursor = cursor->ste;
         }
+        Nodo * aux = nuevo(dato);
+        cursor->ste = aux;
     }
-    imprimir_lista(this->primero);
 }
 
 template <typename T>

@@ -9,22 +9,23 @@ using namespace std;
 class Contacto {
     private:
         string nombre, mail, direccion,  organizacion, puesto, notas;
-        int numero;
+        string numero;
         string cumple;
         Lista<string> links;
     public:
-        Contacto (string n, string m, string d, string o, string p, string notas, int cel, string c, Lista<string> &otro) {
+        Contacto(string & n, string & m, string & d, string & o, string & p, string & _notas, string & cel, string & c, Lista<string> &otro) {
             nombre = n;
             mail = m;
             direccion = d;
             organizacion = o;
             puesto = p;
+            notas = _notas;
             numero = cel;
             cumple = c;
             links = otro;
         }
         Contacto(){
-;            links = Lista<string>();
+            links = Lista<string>();
         }
         Contacto & operator = (const Contacto & otro) {
             this->nombre = otro.nombre;
@@ -35,6 +36,7 @@ class Contacto {
             this->numero = otro.numero;
             this->organizacion = otro.organizacion;
             this->puesto = otro.puesto;
+            this->links = otro.links;
             return * this;
         }
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include "contacto.cpp"
+#include "contacto.h"
 #include <string>
 
 using namespace std;
