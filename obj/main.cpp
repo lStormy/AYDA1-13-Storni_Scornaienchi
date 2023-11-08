@@ -15,7 +15,8 @@ using namespace std;
 
 void cargar_links (Lista<string> & links, string redes);
 void procesar_archivo_entrada(string origen, Agenda constactos);//, Contenedor & contenedor);
-void menu(Agenda contactos);
+void acciones(Agenda & contactos, int opcion);
+void menu(Agenda & contactos);
 
 
 int main() {
@@ -116,20 +117,9 @@ void cargar_links (Lista<string> & links, string redes) {
     }
 }
 
-void menu(Agenda contactos) {
-    int opcion = 3;
-    bool salir = false;
-    while ((opcion >= 1 && opcion <= 3) && (!salir)) {
-        cout << "<Ingrese la acción que quiera llevar a cabo>" << endl;
-        cout << "Eliminar un contacto: 1." << endl;
-        cout << "Recuperar un contacto dado un nombre: 2." << endl;
-        cout << "Mostrar todos los contactos: 3." << endl;
-        cout << "Salir: Un número que no esté en las opciones. " <<endl;
-        cout << "Ingrese: ";
-        cin >> opcion;
-        cout << "<Fin>" << endl;
-        string aux(" ");
-        switch (opcion) {
+void acciones (Agenda & contactos, int opcion) {
+    string aux(" ");
+    switch (opcion) {
             case 1: 
                 cout << "Ingrese el nombre a eliminar: ";
                 cin >> aux;
@@ -145,9 +135,24 @@ void menu(Agenda contactos) {
             case 3:
                 contactos.mostrar_contactos();
                 break;
-            default:
-                salir = true;
-                break;
         }
+}
+
+void menu(Agenda & contactos) {
+    int opcion = 3;
+    while ((opcion >= 1 && opcion <= 3)) {
+        cout << "<Ingrese la acción que quiera llevar a cabo>" << endl;
+        cout << "Eliminar un contacto: 1." << endl;
+        cout << "Recuperar un contacto dado un nombre: 2." << endl;
+        cout << "Mostrar todos los contactos: 3." << endl;
+        cout << "Salir: Un número que no esté en las opciones. " <<endl;
+        cout << "Ingrese: ";
+        cin >> opcion;
+        cout << "<Fin>" << endl;
+        acciones(contactos, opcion);
+        cout << "Presione el enter" << endl;
+        system("clear");
+
+        
     }
 }
