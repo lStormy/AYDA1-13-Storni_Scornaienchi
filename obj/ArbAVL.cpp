@@ -10,8 +10,8 @@ template <typename T> class Avl {
     protected:
         class Nodo {
             private:
-                Avl * izq;
-                Avl * der;
+                Avl<T> * izq;
+                Avl<T> * der;
                 T dato;
             public:
                 Nodo  (Avl<T> * izq, Avl<T> * der, const T & elemento) {
@@ -22,12 +22,12 @@ template <typename T> class Avl {
 
                 Avl<T> * HijoIzq () const {return izq;}
                 Avl<T> * HijoDer () const {return der;}
-                T & raiz () {return dato;}
+                T & valor () {return dato;}
         };
         void vaciar (Avl<T> * raiz);
         Avl<T> * rotar(Avl<T> * raiz);
     private: 
-        Nodo * primero;
+        Nodo * raiz;
         int altura;
         Avl<T> * rotar_izq (Avl<T> * raiz);
         Avl<T> * rotar_der (Avl<T> * raiz);
@@ -45,14 +45,14 @@ template <typename T> class Avl {
         ~Avl () {vaciar (this);}
         
         //Lectoras
-        Avl<T> * sub_izq() const {return primero->HijoIzq();}
-        Avl<T> * sub_der() const {return primero->HijoDer();}
-        const T & dato () const {return primero->raiz();}
+        Avl<T> * sub_izq() const {return raiz->HijoIzq();}
+        Avl<T> * sub_der() const {return raiz->HijoDer();}
+        const T & dato () const {return raiz->valor();}
         Avl<T> * operator=(const Avl<T> * otro);
         bool buscar (const T & dato) const; //Busca e imprime si lo encuentra
         int altura_nodo() const;
         void inorden();
-        bool vacio () const {return primero == NULL;}
+        bool vacio () const {return raiz == NULL;}
         
         //Modificadoras
         void balancear(); 
@@ -69,14 +69,14 @@ template <typename T> class Avl {
 };
 
 template <typename T> Avl<T>::Avl() {
-    primero = NULL;
+    raiz = NULL;
     altura = 0;
 }
 //suka
 
 template <typename T> Avl<T>:: Avl(Avl<T> * otro) {
     altura = otro->altura;
-    this->primero = NULL;
+    this->raiz = NULL;
     this->operator=(otro);
 }
 
@@ -84,20 +84,20 @@ template <typename T> void Avl<T>::vaciar (Avl * raiz) {
     if (!raiz->vacio()) {
         vaciar (raiz->sub_izq());
         vaciar (raiz->sub_der());
-        delete raiz->primero;
-        raiz->primero = NULL;
+        delete raiz->raiz;
+        raiz->raiz = NULL;
     }
 }
 
 template <typename T> Avl<T> * Avl<T>::operator=(const Avl<T> * otro) {
     if (otro->vacio()) {
-        primero = NULL;
+        raiz = NULL;
         altura = 0;
     }
     else {
         Avl<T> * izq = new Avl<T> (otro->sub_izq());
         Avl<T> * der = new Avl <T> (otro->sub_der());
-        primero = new Nodo (izq, der, otro->dato());
+        raiz = new Nodo (izq, der, otro->dato());
         this->actualizar_alturas();
     }
     return this;
@@ -183,9 +183,10 @@ template <typename T> void Avl<T>::insertar (const T & elemento) {
         }
     }
     else {
-        Avl<T> * izq = new Avl<T>();
-        Avl<T> * der = new Avl<T>();
-        primero = new Nodo (izq, der, elemento);
+        Avl<T> * izq = new Avl();
+        Avl<T> * der = new Avl();
+        raiz = new Nodo (izq, der, elemento);
+        
         //actualizar_alturas(this);
     }
 }
@@ -211,15 +212,15 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
         sub_der()->eliminar(dato);
     } else {
         if (sub_izq()->vacio() && sub_der()->vacio()) {
-            delete this->primero;
-            this->primero = NULL;
+            delete this->raiz;
+            this->raiz = NULL;
         } else if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
             Avl<T> * temp = this->sub_der()->min_rama(); 
-            primero->raiz() = temp->dato();
+            raiz->valor() = temp->dato();
             sub_der()->eliminar(temp->dato());
         } else {
             Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
-            primero->raiz() = temp->dato();
+            raiz->valor() = temp->dato();
             if (sub_izq()->vacio()) {
                 sub_der()->eliminar(temp->dato());
             } else {
@@ -255,3 +256,12 @@ template <typename T> void Avl<T>::inorden() {
 template class Avl<int>;
 template class Avl<Contacto>;
 
+
+/*int main () {
+    Avl<int> * arb = new Avl<int>();
+    for (int i = 1; i<=15; i++) {
+        arb->agregar(i);
+        arb->inorden();
+    }
+    return 0;
+}*/

@@ -1,30 +1,30 @@
-#ifndef CONTACTO_H
-#define CONTACTO_H
+#ifndef CONTACTO_H_INCLUDED
+#define CONTACTO_H_INCLUDED
 
 #include <iostream>
-#include "Lista.cpp"
+#include "lista.h"
 #include <string>
 using namespace std;
 
-
 class Contacto {
-    private: 
+    private:
         string nombre, mail, direccion,  organizacion, puesto, notas;
         string numero;
         string cumple;
-        Lista<string> links;         
+        Lista<string> links;
     public:
-        Contacto (string n, string m, string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
+        Contacto(string & n, string & m, string & d, string & o, string & p, string & _notas, string & cel, string & c, Lista<string> &otro) {
             nombre = n;
             mail = m;
             direccion = d;
             organizacion = o;
             puesto = p;
+            notas = _notas;
             numero = cel;
             cumple = c;
-            links = l;
-        } 
-        Contacto() {
+            links = otro;
+        }
+        Contacto(){
             links = Lista<string>();
         }
         Contacto & operator = (const Contacto & otro) {
@@ -36,43 +36,42 @@ class Contacto {
             this->numero = otro.numero;
             this->organizacion = otro.organizacion;
             this->puesto = otro.puesto;
-            this->links = Lista<string> (otro.links);
+            this->links = otro.links;
             return * this;
         }
+
         void modificar_nombre (const string & nombre) {
             this->nombre = nombre;
         }
         bool operator >(const Contacto & otro) const {
             return this->nombre > otro.nombre;
-        } 
+        }
         bool operator <(const Contacto & otro) const {
             return this->nombre < otro.nombre;
         }
         bool operator== (const Contacto & otro) const {
             return this->nombre == otro.nombre;
         }
-        friend std::ostream & operator << (std::ostream& os, const Contacto & c) {
-            os << endl << "<Datos contacto>" 
-               << "\nNombre: " << c.nombre 
-               << "\nMail: " << c.mail 
-               << "\nDirecciÃ³n: " << c.direccion
-               << "\nOrganizaciÃ³n: " << c.organizacion
+        friend ostream & operator << (ostream& os, const Contacto & c) {
+            os << endl << "<Datos contacto>"
+               << "\nNombre: " << c.nombre
+               << "\nMail: " << c.mail
+               << "\nDirección: " << c.direccion
+               << "\nOrganización: " << c.organizacion
                << "\nPuesto: " << c.puesto
                << "\nNumero: " << c.numero
-               << "\nFecha de cumpleaÃ±os: " << c.cumple
-               << "\nLinks: " << c.links 
+               << "\nFecha de cumpleaños: " << c.cumple
+               << "\nLinks: " << c.links
                << "\n<Fin de datos>"<<endl;
             return os;
         }
-
-
 };
 
 
 /**int main () {
-    Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sÃ© cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
+    Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Suka", "Nada", 41349, "1/1/1");
     cout << nuevo;
-    Contacto otro = Contacto("Barlos", "YO", "Alem al no sÃ© cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
+    Contacto otro = Contacto("Barlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
     cout << endl << otro;
     if (nuevo < otro) {
         cout << "Es menor" << endl;
@@ -82,4 +81,5 @@ class Contacto {
     cout << endl;
     return 0;
 }*/
-#endif
+
+#endif // CONTACTO_H_INCLUDED

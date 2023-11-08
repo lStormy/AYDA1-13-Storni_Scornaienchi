@@ -14,10 +14,17 @@ class Agenda  {
             contactos = otro.contactos;
         }
         void cargar_contacto (const Contacto & elemento) {
+            /*
+            Dado un contacto lo inserta en el arbol y lo rota si es necesario.
+            */
             contactos->agregar(elemento);
         }
         void eliminar_contacto (const Contacto & elemento) {
+            /*
+            Dado un contacto lo elimina del arbol
+            */
             contactos->borrar(elemento);
+        
         }
         void recuperar(const string & nombre) const {
             Contacto nuevo = Contacto();
