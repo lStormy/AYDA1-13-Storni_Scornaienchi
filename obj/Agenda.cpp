@@ -19,17 +19,20 @@ class Agenda  {
             */
             contactos->agregar(elemento);
         }
-        void eliminar_contacto (const Contacto & elemento) {
+        void eliminar_contacto (const string & elemento) {
             /*
             Dado un contacto lo elimina del arbol
             */
-            contactos->borrar(elemento);
+            Contacto del;
+            del.modificar_nombre(elemento);
+            contactos->borrar(del);
         
         }
         void recuperar(const string & nombre) const {
             Contacto nuevo = Contacto();
             nuevo.modificar_nombre(nombre);
             contactos->buscar(nuevo);
+            
         } 
         void mostrar_contactos () {
             contactos->inorden();

@@ -14,17 +14,20 @@ using namespace std;
  **/
 
 void cargar_links (Lista<string> & links, string redes);
-void procesar_archivo_entrada(string origen);//, Contenedor & contenedor);
+void procesar_archivo_entrada(string origen, Agenda constactos);//, Contenedor & contenedor);
+void menu(Agenda contactos);
+
 
 int main() {
+    Agenda contactos;
     setlocale(LC_ALL, ""); //asegurarse que el archivo de texto fue guardado como Ansi y no como Unicode
-    procesar_archivo_entrada("contactos.csv");
+    procesar_archivo_entrada("contactos.csv", contactos);
+    menu(contactos);
     return 0;
 }
 
 //Comentarios: atoi y atof requieren un char * para converter a número, usamos c_str de la clase string.
-void procesar_archivo_entrada(string origen) {
-    Agenda contactos;
+void procesar_archivo_entrada(string origen, Agenda contactos) {
     ifstream archivo(origen);
     if (!archivo.is_open())
         cout << "No se pudo abrir el archivo: " << origen << endl;
@@ -98,8 +101,6 @@ void procesar_archivo_entrada(string origen) {
 
             nroContacto++;
         }
-        contactos.mostrar_contactos();
-        
     }
 }
 
@@ -111,6 +112,42 @@ void cargar_links (Lista<string> & links, string redes) {
             aux = " ";
         } else {
             aux += redes[i];
+        }
+    }
+}
+
+void menu(Agenda contactos) {
+    int opcion = 3;
+    bool salir = false;
+    while ((opcion >= 1 && opcion <= 3) && (!salir)) {
+        cout << "<Ingrese la acción que quiera llevar a cabo>" << endl;
+        cout << "Eliminar un contacto: 1." << endl;
+        cout << "Recuperar un contacto dado un nombre: 2." << endl;
+        cout << "Mostrar todos los contactos: 3." << endl;
+        cout << "Salir: Un número que no esté en las opciones. " <<endl;
+        cout << "Ingrese: ";
+        cin >> opcion;
+        cout << "<Fin>" << endl;
+        string aux(" ");
+        switch (opcion) {
+            case 1: 
+                cout << "Ingrese el nombre a eliminar: ";
+                cin >> aux;
+                cout << endl;
+                contactos.eliminar_contacto(aux);
+                break;
+            case 2: 
+                cout << "Ingrese el nombre del contacto: ";
+                cin >> aux; 
+                cout << endl;
+                contactos.recuperar(aux);
+                break;
+            case 3:
+                contactos.mostrar_contactos();
+                break;
+            default:
+                salir = true;
+                break;
         }
     }
 }

@@ -22,7 +22,7 @@ class Contacto {
             puesto = p;
             numero = cel;
             cumple = c;
-            links = l;
+            links = Lista<string>(l);
         } 
         Contacto() {
             links = Lista<string>();

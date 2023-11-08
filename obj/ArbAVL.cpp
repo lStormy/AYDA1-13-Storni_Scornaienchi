@@ -48,8 +48,10 @@ template <typename T> class Avl {
         Avl<T> * sub_izq() const {return raiz->HijoIzq();}
         Avl<T> * sub_der() const {return raiz->HijoDer();}
         const T & dato () const {return raiz->valor();}
+        const T & recuperar (const T & dato) const;
         Avl<T> * operator=(const Avl<T> * otro);
         bool buscar (const T & dato) const; //Busca e imprime si lo encuentra
+        
         int altura_nodo() const;
         void inorden();
         bool vacio () const {return raiz == NULL;}
@@ -232,6 +234,7 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
 
 template <typename T> bool Avl<T>::buscar (const T & dato) const {
     if (vacio()) {
+        cout << "<El contacto no existe>";
         return false;
     } else {
         if (this->dato() == dato) {
@@ -242,7 +245,6 @@ template <typename T> bool Avl<T>::buscar (const T & dato) const {
         }
     }
 }
-
 
 template <typename T> void Avl<T>::inorden() {
     if (!vacio()) {
