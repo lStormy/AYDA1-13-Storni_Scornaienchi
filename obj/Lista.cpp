@@ -49,29 +49,23 @@ template <typename T> class Lista {
         }
         void insertar (const T & dato) {
             if (this->vacio()) {
-                cout << dato << endl;
                 Nodo * aux = nuevo (dato);
             
                 primero = aux;
             } else {
                 if (dato < primero->dato) {
                     Nodo * aux = nuevo (dato);
-                    cout << dato << endl;
                     aux->ste = primero;
                     primero = aux;
                 } else {
                     Nodo * cursor = primero;
-                    while ((cursor->ste != NULL) && (cursor->ste->dato < dato)) {
+                    while (cursor->ste != NULL) {
                         cursor = cursor->ste;
                     }
                     Nodo * aux = nuevo(dato);
-                    if (cursor->ste != NULL) {
-                        aux->ste = cursor->ste;
-                    }
                     cursor->ste = aux;
                 }
             }
-            imprimir_lista(this->primero);
         }
         bool vacio () const {
             return this->primero == NULL;
@@ -122,7 +116,6 @@ template <typename T> class Lista {
             }
             if (otro.vacio()) {
                 primero = NULL;
-                primero->ste = NULL;
             } else {
                 for (int i = 1; i <= otro.len(); i++) {
                     this->insertar(otro.operator()(i)); 

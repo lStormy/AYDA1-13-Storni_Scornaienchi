@@ -22,7 +22,7 @@ class Contacto {
             puesto = p;
             numero = cel;
             cumple = c;
-            links = l;
+            links = Lista<string>(l);
         } 
         Contacto() {
             links = Lista<string>();
@@ -36,7 +36,7 @@ class Contacto {
             this->numero = otro.numero;
             this->organizacion = otro.organizacion;
             this->puesto = otro.puesto;
-            this->links = otro.links;
+            this->links = Lista<string> (otro.links);
             return * this;
         }
         void modificar_nombre (const string & nombre) {

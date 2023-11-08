@@ -14,19 +14,21 @@ using namespace std;
  **/
 
 void cargar_links (Lista<string> & links, string redes);
-void procesar_archivo_entrada(string origen);//, Contenedor & contenedor);
+void procesar_archivo_entrada(string origen, Agenda constactos);//, Contenedor & contenedor);
+void acciones(Agenda & contactos, int opcion);
+void menu(Agenda & contactos);
 
-int main()
-{
+
+int main() {
+    Agenda contactos;
     setlocale(LC_ALL, ""); //asegurarse que el archivo de texto fue guardado como Ansi y no como Unicode
-    procesar_archivo_entrada("contactos.csv");
+    procesar_archivo_entrada("contactos.csv", contactos);
+    menu(contactos);
     return 0;
 }
 
 //Comentarios: atoi y atof requieren un char * para converter a número, usamos c_str de la clase string.
-void procesar_archivo_entrada(string origen)
-{
-    Agenda contactos = Agenda ();
+void procesar_archivo_entrada(string origen, Agenda contactos) {
     ifstream archivo(origen);
     if (!archivo.is_open())
         cout << "No se pudo abrir el archivo: " << origen << endl;
@@ -86,32 +88,71 @@ void procesar_archivo_entrada(string origen)
              //LISTA de REDES
             pos_inicial = pos_final + 1;
             pos_final = linea.find(',', pos_inicial);
+
             string lst_redes = linea.substr(pos_inicial, pos_final - pos_inicial);
             Lista<string> lista_redes = Lista<string> ();
+            
             cargar_links(lista_redes, lst_redes);
-
             Contacto aux = Contacto (nombre, email, direccion, organizacion, puesto, notas, telefono, fecha_nacimiento, lista_redes);
             contactos.cargar_contacto(aux);
-
+            
 
             //TO DO: Completar la lectura separada de las redes de la cancion
 
 
             nroContacto++;
         }
-        contactos.mostrar_contactos();
-        contactos.mostrar_contactos();
     }
 }
 
 void cargar_links (Lista<string> & links, string redes) {
     string aux(" ");
-    for (int i = 0; redes[i] != ']' && redes[i] != '\0'; i++) {
-        if (redes[i] == ';') {
+    for (int i = 1; redes[i] != '\0'; i++) {
+        if ((redes[i] == ';') || (redes[i] == ']')) {
             links.insertar(aux);
             aux = " ";
         } else {
-            aux + redes[i];
+            aux += redes[i];
         }
+    }
+}
+
+void acciones (Agenda & contactos, int opcion) {
+    string aux(" ");
+    switch (opcion) {
+            case 1: 
+                cout << "Ingrese el nombre a eliminar: ";
+                cin >> aux;
+                cout << endl;
+                contactos.eliminar_contacto(aux);
+                break;
+            case 2: 
+                cout << "Ingrese el nombre del contacto: ";
+                cin >> aux; 
+                cout << endl;
+                contactos.recuperar(aux);
+                break;
+            case 3:
+                contactos.mostrar_contactos();
+                break;
+        }
+}
+
+void menu(Agenda & contactos) {
+    int opcion = 3;
+    while ((opcion >= 1 && opcion <= 3)) {
+        cout << "<Ingrese la acción que quiera llevar a cabo>" << endl;
+        cout << "Eliminar un contacto: 1." << endl;
+        cout << "Recuperar un contacto dado un nombre: 2." << endl;
+        cout << "Mostrar todos los contactos: 3." << endl;
+        cout << "Salir: Un número que no esté en las opciones. " <<endl;
+        cout << "Ingrese: ";
+        cin >> opcion;
+        cout << "<Fin>" << endl;
+        acciones(contactos, opcion);
+        cout << "Presione el enter" << endl;
+        system("clear");
+
+        
     }
 }
