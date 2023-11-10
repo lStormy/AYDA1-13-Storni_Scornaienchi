@@ -26,7 +26,20 @@ int main() {
     menu(contactos);
     return 0;
 }
-
+void separar_nombre_apellido (const string & nombre_apellido, string & nombre, string & apellido) {
+    bool n = false;
+    for (int i = 0; nombre_apellido[i] != '\0'; i++) {
+        if (nombre_apellido[i] == ' ') {
+            n = true;
+        }
+        if (n) {
+            nombre += nombre_apellido[i];
+        }
+        else {
+            apellido += nombre_apellido[i];
+        }
+    }
+}
 //Comentarios: atoi y atof requieren un char * para converter a número, usamos c_str de la clase string.
 void procesar_archivo_entrada(string origen, Agenda contactos) {
     ifstream archivo(origen);
@@ -47,7 +60,10 @@ void procesar_archivo_entrada(string origen, Agenda contactos) {
 
 
             //Informacion entre pos_inicial y pos_final
-            string nombre = linea.substr(pos_inicial, pos_final);
+            string nombre_apellido = linea.substr(pos_inicial, pos_final);
+            string nombre (" ");
+            string apellido (" ");
+            separar_nombre_apellido(nombre_apellido, nombre, apellido);
 
              //Segunda posición del separador ;
             pos_inicial = pos_final + 1;
@@ -93,13 +109,9 @@ void procesar_archivo_entrada(string origen, Agenda contactos) {
             Lista<string> lista_redes = Lista<string> ();
             
             cargar_links(lista_redes, lst_redes);
-            Contacto aux = Contacto (nombre, email, direccion, organizacion, puesto, notas, telefono, fecha_nacimiento, lista_redes);
+            Contacto aux = Contacto (nombre, apellido, email, direccion, organizacion, puesto, notas, telefono, fecha_nacimiento, lista_redes);
             contactos.cargar_contacto(aux);
             
-
-            //TO DO: Completar la lectura separada de las redes de la cancion
-
-
             nroContacto++;
         }
     }
@@ -117,11 +129,13 @@ void cargar_links (Lista<string> & links, string redes) {
     }
 }
 
+
+
 void acciones (Agenda & contactos, int opcion) {
     string aux(" ");
     switch (opcion) {
             case 1: 
-                cout << "Ingrese el nombre a eliminar: ";
+                cout << "Ingrese el nombre y apellido a eliminar: ";
                 cin >> aux;
                 cout << endl;
                 contactos.eliminar_contacto(aux);

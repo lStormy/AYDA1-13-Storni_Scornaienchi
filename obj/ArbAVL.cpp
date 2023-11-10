@@ -258,12 +258,24 @@ template <typename T> void Avl<T>::inorden() {
 template class Avl<int>;
 template class Avl<Contacto>;
 
+/*void mostrar (Avl<int> * arb, int cont) {
+    if (!arb->vacio()){
+        mostrar (arb->sub_der(), cont+1 );
+        for (int i = 0; i < cont; i++) {
+            cout << "  ";
+        }
+        cout << arb->dato() <<endl;
+        mostrar(arb->sub_izq(), cont +1);
+    }
+}
 
-/*int main () {
+int main () {
     Avl<int> * arb = new Avl<int>();
     for (int i = 1; i<=15; i++) {
         arb->agregar(i);
-        arb->inorden();
+        cout << endl;
+        mostrar(arb, 0);
+        cout << endl; 
     }
     return 0;
 }*/

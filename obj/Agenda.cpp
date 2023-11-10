@@ -6,6 +6,20 @@
 class Agenda  {
     private:
         Avl<Contacto> * contactos;
+        const Avl<Contacto> * encontrar (string apellido_nombre, Avl<Contacto> * con) const {
+            if (!con->vacio()) {
+                if (con->dato().apellido_nombre() == apellido_nombre) {
+                    return con;
+                } 
+                else if (con->dato().apellido_nombre() < apellido_nombre) {
+                    return encontrar (apellido_nombre, con->sub_der());
+                } 
+                else if (con->dato().apellido_nombre() > apellido_nombre) {
+                    return encontrar(apellido_nombre, con->sub_izq());
+                }
+            }
+        }
+
     public: 
         Agenda() {
             contactos = new Avl<Contacto>();
@@ -23,16 +37,20 @@ class Agenda  {
             /*
             Dado un contacto lo elimina del arbol
             */
-            Contacto del;
-            del.modificar_nombre(elemento);
-            contactos->borrar(del);
-        
+            Contacto del = Contacto (recuperar(elemento));
+            contactos->borrar(del); 
         }
-        void recuperar(const string & nombre) const {
-            Contacto nuevo = Contacto();
-            nuevo.modificar_nombre(nombre);
-            contactos->buscar(nuevo);
-            
+        const Contacto & recuperar(const string & apellido_nombre) const {
+            assert (!contactos->vacio());
+            if (contactos->dato().apellido_nombre() == apellido_nombre) {
+                return contactos->dato();
+            }
+            else if (contactos->dato().apellido_nombre() > apellido_nombre) {
+                return encontrar(apellido_nombre, contactos->sub_izq())->dato();
+            }
+            else if (contactos->dato().apellido_nombre() < apellido_nombre) {
+                return encontrar(apellido_nombre, contactos->sub_der())->dato();
+            }
         } 
         void mostrar_contactos () {
             contactos->inorden();

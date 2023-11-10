@@ -9,13 +9,14 @@ using namespace std;
 
 class Contacto {
     private: 
-        string nombre, mail, direccion,  organizacion, puesto, notas;
+        string nombre, apellido, mail, direccion,  organizacion, puesto, notas;
         string numero;
         string cumple;
         Lista<string> links;         
     public:
-        Contacto (string n, string m, string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
+        Contacto (string n, string m, string a, string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
             nombre = n;
+            apellido = a;
             mail = m;
             direccion = d;
             organizacion = o;
@@ -29,6 +30,7 @@ class Contacto {
         }
         Contacto & operator = (const Contacto & otro) {
             this->nombre = otro.nombre;
+            this->apellido = otro.apellido;
             this->cumple = otro.cumple;
             this->direccion = otro.direccion;
             this->mail = otro.mail;
@@ -39,18 +41,32 @@ class Contacto {
             this->links = Lista<string> (otro.links);
             return * this;
         }
-        void modificar_nombre (const string & nombre) {
+        void modificar_nombre (const string & nombre, const string & apellido) {
             this->nombre = nombre;
+            this->apellido = apellido;
         }
         bool operator >(const Contacto & otro) const {
-            return this->nombre > otro.nombre;
+            if (this->nombre != otro.nombre) {
+                return this->nombre > otro.nombre;
+            }
+            else if (this->apellido != otro.apellido) {
+                return this->apellido > otro.apellido;
+            }
+            return this->numero > otro.numero;
         } 
         bool operator <(const Contacto & otro) const {
-            return this->nombre < otro.nombre;
+            if (this->apellido != otro.apellido) {
+                return this->apellido < otro.apellido;
+            }
+            else if (this->nombre != otro.nombre) {
+                return this->nombre < otro.nombre;
+            }
+            return this->numero < otro.numero;
         }
         bool operator== (const Contacto & otro) const {
             return this->nombre == otro.nombre;
         }
+        //Visualización
         friend std::ostream & operator << (std::ostream& os, const Contacto & c) {
             os << endl << "<Datos contacto>" 
                << "\nNombre: " << c.nombre 
@@ -64,20 +80,28 @@ class Contacto {
                << "\n<Fin de datos>"<<endl;
             return os;
         }
+        const string & apellido_nombre () const {
+            return (nombre + apellido);
+        }
 
 
 };
 
 
-/**int main () {
-    Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
+/*int main () {
+    Lista<string> links = Lista<string>();
+    Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", "41349", "1/1/1", links);
     cout << nuevo;
-    Contacto otro = Contacto("Barlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
+    Contacto otro = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", "41349", "1/1/1", links);
     cout << endl << otro;
     if (nuevo < otro) {
         cout << "Es menor" << endl;
-    } else {
+    } 
+    else if (nuevo > otro) {
         cout << "Es mayor" << endl;
+    }
+    else {
+        cout << "ES LO MISMOO!!!" << endl;
     }
     cout << endl;
     return 0;
