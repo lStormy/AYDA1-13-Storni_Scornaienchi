@@ -12,6 +12,7 @@ class Contacto {
         string numero;
         string cumple;
         Lista<string> links;
+
     public:
         Contacto(string & n, string & m, string & d, string & o, string & p, string & _notas, string & cel, string & c, Lista<string> &otro) {
             nombre = n;
@@ -24,9 +25,11 @@ class Contacto {
             cumple = c;
             links = otro;
         }
+
         Contacto(){
             links = Lista<string>();
         }
+
         Contacto & operator = (const Contacto & otro) {
             this->nombre = otro.nombre;
             this->cumple = otro.cumple;
@@ -43,15 +46,19 @@ class Contacto {
         void modificar_nombre (const string & nombre) {
             this->nombre = nombre;
         }
+
         bool operator >(const Contacto & otro) const {
             return this->nombre > otro.nombre;
         }
+
         bool operator <(const Contacto & otro) const {
             return this->nombre < otro.nombre;
         }
+
         bool operator== (const Contacto & otro) const {
             return this->nombre == otro.nombre;
         }
+
         friend ostream & operator << (ostream& os, const Contacto & c) {
             os << endl << "<Datos contacto>"
                << "\nNombre: " << c.nombre
@@ -66,20 +73,5 @@ class Contacto {
             return os;
         }
 };
-
-
-/**int main () {
-    Contacto nuevo = Contacto("Carlos", "YO", "Alem al no sé cuanto", "No trabajo", "Suka", "Nada", 41349, "1/1/1");
-    cout << nuevo;
-    Contacto otro = Contacto("Barlos", "YO", "Alem al no sé cuanto", "No trabajo", "Que no", "Nada", 41349, "1/1/1");
-    cout << endl << otro;
-    if (nuevo < otro) {
-        cout << "Es menor" << endl;
-    } else {
-        cout << "Es mayor" << endl;
-    }
-    cout << endl;
-    return 0;
-}*/
 
 #endif // CONTACTO_H_INCLUDED
