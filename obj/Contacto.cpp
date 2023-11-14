@@ -14,7 +14,7 @@ class Contacto {
         string cumple;
         Lista<string> links;         
     public:
-        Contacto (string n, string m, string a, string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
+        Contacto (string n, string a, string m,  string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
             nombre = n;
             apellido = a;
             mail = m;
@@ -29,6 +29,7 @@ class Contacto {
             links = Lista<string>();
         }
         Contacto & operator = (const Contacto & otro) {
+            
             this->nombre = otro.nombre;
             this->apellido = otro.apellido;
             this->cumple = otro.cumple;
@@ -38,7 +39,10 @@ class Contacto {
             this->numero = otro.numero;
             this->organizacion = otro.organizacion;
             this->puesto = otro.puesto;
-            this->links = Lista<string> (otro.links);
+            
+            
+            this->links = Lista<string>(otro.links);
+        
             return * this;
         }
         void modificar_nombre (const string & nombre, const string & apellido) {
@@ -46,14 +50,15 @@ class Contacto {
             this->apellido = apellido;
         }
         bool operator >(const Contacto & otro) const {
-            if (this->nombre != otro.nombre) {
-                return this->nombre > otro.nombre;
-            }
-            else if (this->apellido != otro.apellido) {
+            if (this->apellido != otro.apellido) {
                 return this->apellido > otro.apellido;
             }
+            else if (this->nombre != otro.nombre) {
+                return this->nombre > otro.nombre;
+            }
             return this->numero > otro.numero;
-        } 
+        }
+
         bool operator <(const Contacto & otro) const {
             if (this->apellido != otro.apellido) {
                 return this->apellido < otro.apellido;
@@ -64,12 +69,12 @@ class Contacto {
             return this->numero < otro.numero;
         }
         bool operator== (const Contacto & otro) const {
-            return this->nombre == otro.nombre;
+            return ((this->nombre == otro.nombre) && (this->apellido == otro.apellido) && (this->numero == otro.numero));
         }
         //Visualización
         friend std::ostream & operator << (std::ostream& os, const Contacto & c) {
             os << endl << "<Datos contacto>" 
-               << "\nNombre: " << c.nombre 
+               << "\nNombre y apellido: " << c.apellido_nombre()
                << "\nMail: " << c.mail 
                << "\nDirección: " << c.direccion
                << "\nOrganización: " << c.organizacion
@@ -80,8 +85,8 @@ class Contacto {
                << "\n<Fin de datos>"<<endl;
             return os;
         }
-        const string & apellido_nombre () const {
-            return (nombre + apellido);
+        const string apellido_nombre () const {
+            return (nombre + " " + apellido);
         }
 
 

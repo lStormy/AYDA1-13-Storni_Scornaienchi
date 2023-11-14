@@ -48,7 +48,6 @@ template <typename T> class Avl {
         Avl<T> * sub_izq() const {return raiz->HijoIzq();}
         Avl<T> * sub_der() const {return raiz->HijoDer();}
         const T & dato () const {return raiz->valor();}
-        const T & recuperar (const T & dato) const;
         Avl<T> * operator=(const Avl<T> * otro);
         bool buscar (const T & dato) const; //Busca e imprime si lo encuentra
         
@@ -206,6 +205,7 @@ template <typename T> Avl<T> * Avl<T>::min_rama() {
 }
 
 template <typename T> void Avl<T>::eliminar(const T & dato) {
+    
     if (vacio()) {
         return;
     } else if (dato < this->dato()) {
@@ -217,10 +217,14 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
             delete this->raiz;
             this->raiz = NULL;
         } else if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
+            
             Avl<T> * temp = this->sub_der()->min_rama(); 
             raiz->valor() = temp->dato();
+            cout << "Todo correcto hasta acá" << endl;
             sub_der()->eliminar(temp->dato());
+            
         } else {
+            
             Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
             raiz->valor() = temp->dato();
             if (sub_izq()->vacio()) {

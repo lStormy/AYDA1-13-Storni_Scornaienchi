@@ -32,11 +32,22 @@ void separar_nombre_apellido (const string & nombre_apellido, string & nombre, s
         if (nombre_apellido[i] == ' ') {
             n = true;
         }
-        if (n) {
-            nombre += nombre_apellido[i];
+        if (!n) {
+            if (nombre == " ") {
+                nombre = nombre_apellido[i];
+            }
+            else {
+                nombre += nombre_apellido[i];
+            }
         }
         else {
-            apellido += nombre_apellido[i];
+            if (apellido == " ") {
+                apellido = nombre_apellido[i];
+            }
+            else {
+                apellido += nombre_apellido[i];
+            }
+            
         }
     }
 }
@@ -58,11 +69,12 @@ void procesar_archivo_entrada(string origen, Agenda contactos) {
             int pos_inicial = 0;
             int pos_final = linea.find(',');
 
-
+            
             //Informacion entre pos_inicial y pos_final
             string nombre_apellido = linea.substr(pos_inicial, pos_final);
             string nombre (" ");
             string apellido (" ");
+            
             separar_nombre_apellido(nombre_apellido, nombre, apellido);
 
              //Segunda posición del separador ;
@@ -113,9 +125,17 @@ void procesar_archivo_entrada(string origen, Agenda contactos) {
             contactos.cargar_contacto(aux);
             
             nroContacto++;
+            
         }
     }
 }
+
+void eliminar_contacto_archivo (string origen) {
+    ofstream arch (origen);
+    arch << " ";
+    arch.close();
+}
+
 
 void cargar_links (Lista<string> & links, string redes) {
     string aux(" ");
@@ -132,23 +152,59 @@ void cargar_links (Lista<string> & links, string redes) {
 
 
 void acciones (Agenda & contactos, int opcion) {
-    string aux(" ");
+    string nombre(" ");
+    string apellido (" ");
     switch (opcion) {
             case 1: 
-                cout << "Ingrese el nombre y apellido a eliminar: ";
-                cin >> aux;
+                cout << "Ingrese el nombre y el apellido separado con espacios: ";
+                cin >> nombre;
+                cin >> apellido;
                 cout << endl;
-                contactos.eliminar_contacto(aux);
+                contactos.eliminar_contacto(nombre + " " + apellido);
                 break;
             case 2: 
-                cout << "Ingrese el nombre del contacto: ";
-                cin >> aux; 
+                cout << "Ingrese el nombre: ";
+                cin >> nombre;
+                cin >> apellido;
                 cout << endl;
-                contactos.recuperar(aux);
+                cout << contactos.recuperar(nombre + " " + apellido) << endl;
                 break;
             case 3:
                 contactos.mostrar_contactos();
                 break;
+            case 4: 
+                string nombre, apellido, mail, direccion,  organizacion, puesto, notas, numero, cumple;
+                Lista<string> links;
+                cout << "<Cargue los datos del contacto>" << endl;
+                cout << "Nombre: ";
+                cin >> nombre;
+                cout << endl;
+                cout << "Apellido: ";
+                cin >> apellido;
+                cout << endl;
+                cout << "Mail: ";
+                cin >> mail;
+                cout << endl;
+                cout << "Dirección: ";
+                cin >> direccion;
+                cout << endl;
+                cout << "Organización: ";
+                cin >> organizacion;
+                cout << endl;
+                cout << "Puesto: ";
+                cin >> puesto;
+                cout << endl;
+                cout << "Notas: ";
+                cin >> notas;
+                cout << endl; 
+                cout << "Numero: ";
+                cin >> numero;
+                cout << endl;
+                cout << "Fecha de cumpleaños: ";
+                cin >> cumple;
+                cout << endl;
+                cout << "<fin de carga>" << endl;
+                contactos.cargar_contacto(Contacto(nombre, apellido, mail, direccion, organizacion, puesto, notas, numero, cumple, links));
         }
 }
 
@@ -159,14 +215,13 @@ void menu(Agenda & contactos) {
         cout << "Eliminar un contacto: 1." << endl;
         cout << "Recuperar un contacto dado un nombre: 2." << endl;
         cout << "Mostrar todos los contactos: 3." << endl;
+        cout << "Agregar un contacto: 4" << endl;
         cout << "Salir: Un número que no esté en las opciones. " <<endl;
         cout << "Ingrese: ";
         cin >> opcion;
         cout << "<Fin>" << endl;
-        acciones(contactos, opcion);
-        cout << "Presione el enter" << endl;
         system("clear");
+        acciones(contactos, opcion);
 
-        
     }
 }

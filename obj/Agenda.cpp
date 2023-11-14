@@ -17,6 +17,9 @@ class Agenda  {
                 else if (con->dato().apellido_nombre() > apellido_nombre) {
                     return encontrar(apellido_nombre, con->sub_izq());
                 }
+            } else {
+                cout << "No existe el contacto" << endl;
+                return new Avl<Contacto> ();
             }
         }
 
@@ -38,6 +41,7 @@ class Agenda  {
             Dado un contacto lo elimina del arbol
             */
             Contacto del = Contacto (recuperar(elemento));
+           
             contactos->borrar(del); 
         }
         const Contacto & recuperar(const string & apellido_nombre) const {
