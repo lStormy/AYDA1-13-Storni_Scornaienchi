@@ -9,12 +9,14 @@
 using namespace std;
 
 /**
- * Abre el archivo según el origen, procesa las l�neas del mismo y
+ * Abre el archivo según el origen, procesa las líneas del mismo y
  * almacena la información resultante en el contenedor pasado por referencia.
  **/
 
+void separar_nombre_apellido(const string & nombre_apellid, string & nombre, string & apellido);
 void cargar_links (Lista<string> & links, string redes);
 void procesar_archivo_entrada(string origen, Agenda constactos);//, Contenedor & contenedor);
+void cargar_links_consola (Lista<string> & links);
 void acciones(Agenda & contactos, int opcion);
 void menu(Agenda & contactos);
 
@@ -26,13 +28,14 @@ int main() {
     menu(contactos);
     return 0;
 }
+
 void separar_nombre_apellido (const string & nombre_apellido, string & nombre, string & apellido) {
-    bool n = false;
+    bool cambio = false; //Marca cuando cambia de nombre a apellido. Si es false significa que seguimos cargando el nombre
     for (int i = 0; nombre_apellido[i] != '\0'; i++) {
         if (nombre_apellido[i] == ' ') {
-            n = true;
+            cambio = true;
         }
-        if (!n) {
+        if (!cambio) {
             if (nombre == " ") {
                 nombre = nombre_apellido[i];
             }
@@ -51,6 +54,20 @@ void separar_nombre_apellido (const string & nombre_apellido, string & nombre, s
         }
     }
 }
+
+void cargar_links (Lista<string> & links, string redes) {
+    string aux(" ");
+    for (int i = 1; redes[i] != '\0'; i++) {
+        if ((redes[i] == ';') || (redes[i] == ']')) {
+            links.insertar(aux);
+            aux = " ";
+        } else {
+            aux += redes[i];
+        }
+    }
+}
+
+
 //Comentarios: atoi y atof requieren un char * para converter a número, usamos c_str de la clase string.
 void procesar_archivo_entrada(string origen, Agenda contactos) {
     ifstream archivo(origen);
@@ -130,51 +147,54 @@ void procesar_archivo_entrada(string origen, Agenda contactos) {
     }
 }
 
-void eliminar_contacto_archivo (string origen) {
-    ofstream arch (origen);
-    arch << " ";
-    arch.close();
-}
-
-
-void cargar_links (Lista<string> & links, string redes) {
-    string aux(" ");
-    for (int i = 1; redes[i] != '\0'; i++) {
-        if ((redes[i] == ';') || (redes[i] == ']')) {
-            links.insertar(aux);
-            aux = " ";
-        } else {
-            aux += redes[i];
+void cargar_links_consola (Lista<string> & lista) {
+    cout << "<Inicio de carga de Links>" << endl;
+    string link(" ");
+    int seguir = 1;
+    while (seguir == 1)  {
+        cout << "Ingrese el link sin espacio: ";
+        cin >> link;
+        lista.insertar(link);
+        cout << "Quiere seguir cargando?\n1: si\n0:no\nCargue: ";
+        cin >> seguir;
+        while (seguir != 0 && seguir != 1) {
+            cout << "Ingreso invalido: ";
+            cin >> seguir;
         }
     }
 }
 
 
-
 void acciones (Agenda & contactos, int opcion) {
     string nombre(" ");
     string apellido (" ");
+    Contacto aux;
     switch (opcion) {
             case 1: 
                 cout << "Ingrese el nombre y el apellido separado con espacios: ";
                 cin >> nombre;
                 cin >> apellido;
                 cout << endl;
-                contactos.eliminar_contacto(nombre + " " + apellido);
+                contactos.eliminar_contacto(apellido, nombre);
                 break;
             case 2: 
-                cout << "Ingrese el nombre: ";
+                cout << "Ingrese el nombre y apellido con espacios: ";
                 cin >> nombre;
                 cin >> apellido;
                 cout << endl;
-                cout << contactos.recuperar(nombre + " " + apellido) << endl;
+                aux = contactos.recuperar(apellido, nombre);
+                cout << "hola" << endl;
+                if (aux.recuperar_apellido() != " ") {
+                    cout << aux << endl;
+                }
                 break;
             case 3:
                 contactos.mostrar_contactos();
                 break;
             case 4: 
-                string nombre, apellido, mail, direccion,  organizacion, puesto, notas, numero, cumple;
+                string mail, direccion,  organizacion, puesto, notas, numero, cumple;
                 Lista<string> links;
+                int cargar = 0;
                 cout << "<Cargue los datos del contacto>" << endl;
                 cout << "Nombre: ";
                 cin >> nombre;
@@ -203,14 +223,24 @@ void acciones (Agenda & contactos, int opcion) {
                 cout << "Fecha de cumpleaños: ";
                 cin >> cumple;
                 cout << endl;
+                cout << "¿Quiere cargar links de redes sociales?\n0: No\n1:Si\ninsertar: ";
+                cin >> cargar;
+                while (cargar !=0 && cargar != 1) {
+                    cout << "Valor incorrecto. Cargue denuevo: ";
+                    cin >> cargar;
+                }
+                if (cargar == 1) {
+                    cargar_links_consola(links);
+                }
                 cout << "<fin de carga>" << endl;
                 contactos.cargar_contacto(Contacto(nombre, apellido, mail, direccion, organizacion, puesto, notas, numero, cumple, links));
+                break;
         }
 }
 
 void menu(Agenda & contactos) {
     int opcion = 3;
-    while ((opcion >= 1 && opcion <= 3)) {
+    while ((opcion >= 1 && opcion <= 4)) {
         cout << "<Ingrese la acción que quiera llevar a cabo>" << endl;
         cout << "Eliminar un contacto: 1." << endl;
         cout << "Recuperar un contacto dado un nombre: 2." << endl;
@@ -222,6 +252,5 @@ void menu(Agenda & contactos) {
         cout << "<Fin>" << endl;
         system("clear");
         acciones(contactos, opcion);
-
     }
 }

@@ -9,11 +9,10 @@ using namespace std;
 
 class Contacto {
     private: 
-        string nombre, apellido, mail, direccion,  organizacion, puesto, notas;
-        string numero;
-        string cumple;
+        string nombre, apellido, mail, direccion,  organizacion, puesto, notas, numero, cumple;
         Lista<string> links;         
     public:
+        //Constructoras por copia y vacía
         Contacto (string n, string a, string m,  string d, string o, string p, string notas, string cel, string c, const Lista<string> & l) {
             nombre = n;
             apellido = a;
@@ -26,8 +25,18 @@ class Contacto {
             links = Lista<string>(l);
         } 
         Contacto() {
+            nombre = " ";
+            apellido = " ";
+            mail = " ";
+            direccion= " ";
+            organizacion = " ";
+            puesto = " ";
+            notas =  " ";
+            numero = " ";
+            cumple = " ";
             links = Lista<string>();
         }
+        //Modificadoras
         Contacto & operator = (const Contacto & otro) {
             
             this->nombre = otro.nombre;
@@ -45,10 +54,7 @@ class Contacto {
         
             return * this;
         }
-        void modificar_nombre (const string & nombre, const string & apellido) {
-            this->nombre = nombre;
-            this->apellido = apellido;
-        }
+        //Sobre carga de operadores
         bool operator >(const Contacto & otro) const {
             if (this->apellido != otro.apellido) {
                 return this->apellido > otro.apellido;
@@ -74,7 +80,7 @@ class Contacto {
         //Visualización
         friend std::ostream & operator << (std::ostream& os, const Contacto & c) {
             os << endl << "<Datos contacto>" 
-               << "\nNombre y apellido: " << c.apellido_nombre()
+               << "\nNombre y apellido: " << c.nombre + " " + c.apellido
                << "\nMail: " << c.mail 
                << "\nDirección: " << c.direccion
                << "\nOrganización: " << c.organizacion
@@ -85,8 +91,11 @@ class Contacto {
                << "\n<Fin de datos>"<<endl;
             return os;
         }
-        const string apellido_nombre () const {
-            return (nombre + " " + apellido);
+        const string recuperar_apellido () const {
+            return apellido;
+        }
+        const string recuperar_nombre () const {
+            return nombre;
         }
 
 

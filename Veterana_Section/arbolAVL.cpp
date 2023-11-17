@@ -101,7 +101,7 @@ void Avl<T>::actualizar_alturas() {
 }
 
 template <typename T>
-bool Avl<T>::balanceado() const { //Chequea si un nodo está balanceado.
+bool Avl<T>::balanceado() const { //Chequea si un nodo estï¿½ balanceado.
     (((this->sub_izq()->altura - this->sub_der()->altura) > 1) || ((this->sub_izq()->altura - this->sub_der()->altura < -1))) ? false : true;
 }
 
@@ -182,35 +182,39 @@ Avl<T> * Avl<T>::min_rama() {
     }
 }
 
-template <typename T>
-void Avl<T>::eliminar(const T & dato) {
+template <typename T> void Avl<T>::eliminar(const T & dato) {
     if (vacio()) {
         return;
     } else if (dato < this->dato()) {
-        sub_izq()->eliminar(dato);
+        sub_izq()->eliminar(dato);    
     } else if (dato > this->dato()) {
         sub_der()->eliminar(dato);
     } else {
-        if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
-            Avl<T> * temp = this->sub_der()->min_rama();
-            primero->raiz() = temp->dato();
+        if (sub_izq()->vacio() && sub_der()->vacio()) {
+            delete this->raiz;
+            this->raiz = NULL;
+        } else if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
+            
+            Avl<T> * temp = this->sub_der()->min_rama(); 
+            cout << raiz->valor() << endl;
+            raiz->valor() = temp->dato();
+            cout << temp->dato() << endl;
             sub_der()->eliminar(temp->dato());
+            
         } else {
-            if (sub_izq()->vacio() && sub_der()->vacio()) {
-                delete this->primero;
-                this->primero = NULL;
+            cout << raiz->valor() << endl;
+            Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
+            cout << temp->dato();
+            raiz->valor() = temp->dato();
+            if (sub_izq()->vacio()) {
+                sub_der()->eliminar(temp->dato());
             } else {
-                Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
-                primero->raiz() = temp->dato();
-                if (sub_izq()->vacio()) {
-                    sub_der()->eliminar(temp->dato());
-                } else {
-                    sub_izq()->eliminar(temp->dato());
-                }
+                sub_izq()->eliminar(temp->dato());
             }
-        }
+        }    
     }
 }
+
 
 template <typename T>
 bool Avl<T>::buscar (const T & dato) const {

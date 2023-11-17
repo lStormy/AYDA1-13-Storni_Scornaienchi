@@ -219,13 +219,15 @@ template <typename T> void Avl<T>::eliminar(const T & dato) {
         } else if ((!sub_izq()->vacio()) && (!sub_der()->vacio())) {
             
             Avl<T> * temp = this->sub_der()->min_rama(); 
+            cout << raiz->valor() << endl;
             raiz->valor() = temp->dato();
-            cout << "Todo correcto hasta acá" << endl;
+            cout << temp->dato() << endl;
             sub_der()->eliminar(temp->dato());
             
         } else {
-            
+            cout << raiz->valor() << endl;
             Avl<T> * temp = (sub_izq()->vacio()) ? sub_der() : sub_izq();
+            cout << temp->dato();
             raiz->valor() = temp->dato();
             if (sub_izq()->vacio()) {
                 sub_der()->eliminar(temp->dato());
@@ -252,9 +254,9 @@ template <typename T> bool Avl<T>::buscar (const T & dato) const {
 
 template <typename T> void Avl<T>::inorden() {
     if (!vacio()) {
-        sub_izq()->inorden();
         cout << dato();
         cout << endl;
+        sub_izq()->inorden();
         sub_der()->inorden();
     }
 }
@@ -281,5 +283,13 @@ int main () {
         mostrar(arb, 0);
         cout << endl; 
     }
+    for (int i = 15; i >= 1; i = i/2) {
+        arb->borrar(i);
+        cout << endl;
+        mostrar(arb, 0);
+        cout << endl;
+    }
+
     return 0;
-}*/
+}
+*/
