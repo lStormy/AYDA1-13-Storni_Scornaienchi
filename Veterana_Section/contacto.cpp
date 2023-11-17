@@ -17,6 +17,15 @@ Contacto::Contacto(string & n, string & a, string & m, string & d, string & o, s
 }
 
 Contacto::Contacto() {
+    nombre = "";
+    apellido = "";
+    mail = "";
+    direccion = "";
+    organizacion = "";
+    puesto = "";
+    notas = "";
+    numero = "";
+    cumple = "";
     links = Lista<string>();
 }
 
@@ -36,12 +45,21 @@ Contacto & Contacto::operator=(const Contacto & otro) {
     return * this;
 }
 
+void Contacto::cambiar_nombre_apellido(const string & apellido, const string & nombre) {
+    this->apellido = apellido;
+    this->nombre = nombre;
+}
+
 bool Contacto::operator >(const Contacto & otro) const {
     if (this->apellido != otro.apellido) {
         return this->apellido > otro.apellido;
     }
     else if (this->nombre != otro.nombre) {
         return this->nombre > otro.nombre;
+    }
+    if (otro.numero == "" || this->numero == ""){
+        
+        return false;
     }
     return this->numero > otro.numero;
 }
@@ -53,10 +71,16 @@ bool Contacto::operator <(const Contacto & otro) const {
     else if (this->nombre != otro.nombre) {
         return this->nombre < otro.nombre;
     }
+    if (otro.numero == "" || this->numero == ""){
+        return false;
+    }
     return this->numero < otro.numero;
 }
 
 bool Contacto::operator== (const Contacto & otro) const {
+    if (otro.numero == "" || this->numero == ""){
+        return (this->nombre == otro.nombre) && (this->apellido == otro.apellido);
+    }
     return ((this->nombre == otro.nombre) && (this->apellido == otro.apellido) && (this->numero == otro.numero));
 }
 

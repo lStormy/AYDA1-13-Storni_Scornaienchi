@@ -183,11 +183,8 @@ void acciones (Agenda & contactos, int opcion) {
                 cin >> nombre;
                 cin >> apellido;
                 cout << endl;
-                aux = contactos.recuperar(apellido, nombre);
-                cout << "hola" << endl;
-                if (aux.recuperar_apellido() != " ") {
-                    cout << aux << endl;
-                }
+                contactos.imprimir_contacto(apellido, nombre);
+                
                 break;
             case 3:
                 contactos.mostrar_contactos();
@@ -234,6 +231,7 @@ void acciones (Agenda & contactos, int opcion) {
                     cargar_links_consola(links);
                 }
                 cout << "<fin de carga>" << endl;
+                
                 contactos.cargar_contacto(Contacto(nombre, apellido, mail, direccion, organizacion, puesto, notas, numero, cumple, links));
                 break;
         }

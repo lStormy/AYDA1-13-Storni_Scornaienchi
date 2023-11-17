@@ -18,6 +18,8 @@ class Contacto {
 
         Contacto & operator= (const Contacto & otro);
 
+        void cambiar_nombre_apellido (const string & apellido, const string & nombre);
+
         bool operator >(const Contacto & otro) const;
 
         bool operator <(const Contacto & otro) const;
@@ -32,8 +34,8 @@ class Contacto {
             os << endl << "<Datos contacto>"
                << "\nNombre y apellido: " << c.nombre + " " + c.apellido
                << "\nMail: " << c.mail
-               << "\nDirecci�n: " << c.direccion
-               << "\nOrganizaci�n: " << c.organizacion
+               << "\nDirección: " << c.direccion
+               << "\nOrganización: " << c.organizacion
                << "\nPuesto: " << c.puesto
                << "\nNumero: " << c.numero
                << "\nFecha de cumplea�os: " << c.cumple
