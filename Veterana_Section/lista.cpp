@@ -48,6 +48,14 @@ void Lista<T>::insertar (const T & dato) {
 }
 
 template <typename T>
+typename Lista<T>::Nodo *Lista<T>::nuevo(const T & dato) {
+    Nodo * aux = new Nodo();
+    aux->dato = dato;
+    aux->ste = NULL;
+    return aux;
+}
+
+template <typename T>
 void Lista<T>::eliminar (const int & pos) {
     assert (pos >= 1 && pos <= len());
     if (pos == 1) {
@@ -106,8 +114,8 @@ Lista<T>& Lista<T>::operator= (const Lista<T>& otro) {
     }
     if (otro.vacio()) {
         primero = NULL;
-        primero->ste = NULL;
-    } else {
+    } 
+    else {
         for (int i = 1; i <= otro.len(); i++) {
             this->insertar(otro.operator()(i));
         }

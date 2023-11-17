@@ -21,17 +21,19 @@ Contacto::Contacto() {
 }
 
 Contacto & Contacto::operator=(const Contacto & otro) {
-            this->nombre = otro.nombre;
-            this->apellido = otro.apellido;
-            this->cumple = otro.cumple;
-            this->direccion = otro.direccion;
-            this->mail = otro.mail;
-            this->notas = otro.notas;
-            this->numero = otro.numero;
-            this->organizacion = otro.organizacion;
-            this->puesto = otro.puesto;
-            this->links = otro.links;
-            return * this;
+            
+    this->nombre = otro.nombre;
+    this->apellido = otro.apellido;
+    this->cumple = otro.cumple;
+    this->direccion = otro.direccion;
+    this->mail = otro.mail;
+    this->notas = otro.notas;
+    this->numero = otro.numero;
+    this->organizacion = otro.organizacion;
+    this->puesto = otro.puesto;
+            
+    this->links = Lista<string>(otro.links);
+    return * this;
 }
 
 bool Contacto::operator >(const Contacto & otro) const {

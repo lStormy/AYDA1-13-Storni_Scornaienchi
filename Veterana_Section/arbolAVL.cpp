@@ -7,24 +7,46 @@
 
 using namespace std;
 
+template <typename T> 
+Avl<T>::Nodo::Nodo (Avl<T> * izq, Avl<T> * der, const T & elemento) {
+    this->dato = elemento;
+    this->izq = izq;
+    this->der = der;
+} 
+
+template <typename T> 
+Avl<T> * Avl<T>::Nodo::HijoIzq() const {
+    return izq;
+}
+
+template <typename T>
+Avl<T> * Avl<T>::Nodo::HijoDer() const {
+    return der;
+}
+
+template <typename T>
+T & Avl<T>::Nodo::valor() {
+    return dato;
+}
+
 template <typename T>
 const T & Avl<T>::dato () const {
-    return primero->raiz();
+    return raiz->valor();
 }
 
 template <typename T>
 Avl<T> * Avl<T>::sub_der() const {
-    return primero->HijoDer();
+    return raiz->HijoDer();
 }
 
 template <typename T>
 Avl<T> * Avl<T>::sub_izq() const {
-    return primero->HijoIzq();
+    return raiz->HijoIzq();
 }
 
 template <typename T>
 bool Avl<T>::vacio() const {
-    return primero == NULL;
+    return raiz == NULL;
 }
 
 template <typename T>
@@ -43,7 +65,7 @@ void Avl<T>::borrar(const T & dato) {
 
 template <typename T>
 Avl<T>::Avl() {
-    primero = NULL;
+    raiz = NULL;
     altura = 0;
 }
 //suka
@@ -51,30 +73,35 @@ Avl<T>::Avl() {
 template <typename T>
 Avl<T>::Avl(Avl<T> * otro) {
     altura = otro->altura;
-    this->primero = NULL;
+    this->raiz = NULL;
     this->operator=(otro);
 }
 
 template <typename T>
-void Avl<T>::vaciar (Avl * raiz) {
-    if (!raiz->vacio()) {
-        vaciar (raiz->sub_izq());
-        vaciar (raiz->sub_der());
-        delete raiz->primero;
-        raiz->primero = NULL;
+Avl<T>::~Avl() {
+    vaciar (this);
+}
+
+template <typename T>
+void Avl<T>::vaciar (Avl * otro) {
+    if (!otro->vacio()) {
+        vaciar (otro->sub_izq());
+        vaciar (otro->sub_der());
+        delete otro->raiz;
+        otro->raiz = NULL;
     }
 }
 
 template <typename T>
 Avl<T> * Avl<T>::operator=(const Avl<T> * otro) {
     if (otro->vacio()) {
-        primero = NULL;
+        raiz = NULL;
         altura = 0;
     }
     else {
         Avl<T> * izq = new Avl<T> (otro->sub_izq());
         Avl<T> * der = new Avl <T> (otro->sub_der());
-        primero = new Nodo (izq, der, otro->dato());
+        raiz = new Nodo (izq, der, otro->dato());
         this->actualizar_alturas();
     }
     return this;
@@ -106,38 +133,38 @@ bool Avl<T>::balanceado() const { //Chequea si un nodo est� balanceado.
 }
 
 template <typename T>
-Avl<T> * Avl<T>::rotar_izq (Avl<T> * raiz) {
-    Avl<T> * aux = new Avl<T>(raiz->sub_der());
+Avl<T> * Avl<T>::rotar_izq (Avl<T> * otro) {
+    Avl<T> * aux = new Avl<T>(otro->sub_der());
     Avl<T> * aux2  = new Avl<T>(aux->sub_izq());
-    raiz->sub_der()->operator=(aux2);
-    aux->sub_izq()->operator=(raiz);
+    otro->sub_der()->operator=(aux2);
+    aux->sub_izq()->operator=(otro);
     aux->actualizar_alturas();
-    raiz->actualizar_alturas();
+    otro->actualizar_alturas();
     return aux;
 }
 
 template <typename T>
-Avl<T> * Avl<T>::rotar_der (Avl<T> * raiz) {
-    Avl * aux = new Avl<T> (raiz->sub_izq());
+Avl<T> * Avl<T>::rotar_der (Avl<T> * otro) {
+    Avl * aux = new Avl<T> (otro->sub_izq());
     Avl * aux2  = new Avl<T>(aux->sub_der());
-    raiz->sub_izq()->operator=(aux2);
-    aux->sub_der()->operator=(raiz);
+    otro->sub_izq()->operator=(aux2);
+    aux->sub_der()->operator=(otro);
     aux->actualizar_alturas();
-    raiz->actualizar_alturas();
+    otro->actualizar_alturas();
     return aux;
 }
 
 template <typename T>
-Avl<T> * Avl <T>::rotar(Avl<T> * raiz) {
+Avl<T> * Avl <T>::rotar(Avl<T> * otro) {
     if (!vacio()) {
-        int balance = (raiz->sub_izq()->altura - raiz->sub_der()->altura);
+        int balance = (otro->sub_izq()->altura - otro->sub_der()->altura);
         if (balance > 1) {
-            raiz = rotar_der(raiz);
+            otro = rotar_der(otro);
         } else if (balance < -1) {
-            raiz = rotar_izq (raiz);
+            otro = rotar_izq (otro);
         }
     }
-    return raiz;
+    return otro;
 }
 
 template <typename T>
@@ -154,7 +181,9 @@ void Avl<T>::balancear () {
 
 template <typename T>
 void Avl<T>::insertar (const T & elemento) {
+    cout << "HOLA" << endl;
     if (!vacio()) {
+        cout << "huola" << endl;
         if (elemento > this->dato()) {
             this->sub_der()->insertar(elemento);
         } else {
@@ -162,9 +191,10 @@ void Avl<T>::insertar (const T & elemento) {
         }
     }
     else {
-        Avl<T> * izq = new Avl<T>();
-        Avl<T> * der = new Avl<T>();
-        primero = new Nodo (izq, der, elemento);
+        Avl<T> * izq = new Avl();
+        Avl<T> * der = new Avl();
+        cout << "HOLA" << endl;
+        raiz = new Nodo (izq, der, elemento);
         //actualizar_alturas(this);
     }
 }

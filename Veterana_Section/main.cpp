@@ -138,9 +138,10 @@ void procesar_archivo_entrada(string origen, Agenda contactos) {
             Lista<string> lista_redes = Lista<string> ();
             
             cargar_links(lista_redes, lst_redes);
+            
             Contacto aux = Contacto (nombre, apellido, email, direccion, organizacion, puesto, notas, telefono, fecha_nacimiento, lista_redes);
             contactos.cargar_contacto(aux);
-            
+    
             nroContacto++;
             
         }

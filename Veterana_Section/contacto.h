@@ -30,7 +30,7 @@ class Contacto {
             No encontramos la forma de ponerlo en el .cpp
             */
             os << endl << "<Datos contacto>"
-               << "\nNombre: " << c.nombre
+               << "\nNombre y apellido: " << c.nombre + " " + c.apellido
                << "\nMail: " << c.mail
                << "\nDirecci�n: " << c.direccion
                << "\nOrganizaci�n: " << c.organizacion

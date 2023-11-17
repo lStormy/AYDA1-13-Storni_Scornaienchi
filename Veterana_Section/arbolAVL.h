@@ -5,27 +5,23 @@ template <typename T> class Avl {
     protected:
         class Nodo {
             private:
-                Avl * izq;
-                Avl * der;
+                Avl<T> * izq;
+                Avl<T> * der;
                 T dato;
             public:
-                Nodo  (Avl<T> * izq, Avl<T> * der, const T & elemento) {
-                    this->dato = elemento;
-                    this->izq = izq;
-                    this->der = der;
-                }
+                Nodo  (Avl<T> * izq, Avl<T> * der, const T & elemento);
 
-                Avl<T> * HijoIzq () const {return izq;}
-                Avl<T> * HijoDer () const {return der;}
-                T & raiz () {return dato;}
+                Avl<T> * HijoIzq () const;
+                Avl<T> * HijoDer () const;
+                T & valor ();
         };
-        void vaciar (Avl<T> * raiz);
-        Avl<T> * rotar(Avl<T> * raiz);
+        void vaciar (Avl<T> * otro);
+        Avl<T> * rotar(Avl<T> * otro);
     private:
-        Nodo * primero;
+        Nodo * raiz;
         int altura;
-        Avl<T> * rotar_izq (Avl<T> * raiz);
-        Avl<T> * rotar_der (Avl<T> * raiz);
+        Avl<T> * rotar_izq (Avl<T> * otro);
+        Avl<T> * rotar_der (Avl<T> * otro);
         void actualizar_alturas();
         void insertar (const T & elemento);
         void eliminar(const T & dato);
@@ -37,7 +33,7 @@ template <typename T> class Avl {
         Avl (Avl<T> * otro); // Por copia
 
         //Destructora
-        ~Avl () {vaciar (this);}
+        ~Avl ();
 
         //Lectoras
         Avl<T> * sub_izq() const;

@@ -15,12 +15,7 @@ class Lista {
     private:
         Nodo * primero;
 
-        Nodo * nuevo (const T & dato) {
-            Nodo * aux = new Nodo();
-            aux->dato = dato;
-            aux->ste = NULL;
-            return aux;
-        }
+        Nodo * nuevo (const T & dato);
         void vaciar (Nodo * lista);
         void imprimir_lista (Nodo * listita);
 
